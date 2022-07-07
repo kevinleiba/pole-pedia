@@ -18,7 +18,7 @@ yet another section....
 
   const title = "Sample Article"
 
-  await prisma.user.delete({ where: { title } }).catch(() => {
+  await prisma.article.delete({ where: { title } }).catch(() => {
     // no worries if it doesn't exist yet
   });
 
