@@ -1,47 +1,32 @@
 const { PrismaClient } = require("@prisma/client");
-const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
 
-  // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
+  const content = `
+# Sample Section
+this is a sample section with some sample text *inside* of **it**
+
+# Sample Seconde Section
+yet another section....
+  `
+
+  const image = "https://picsum.photos/200"
+
+  const introduction = `Sample introduction for a sample article.... Pretty nice uh?`
+
+  const title = "Sample Article"
+
+  await prisma.article.delete({ where: { title } }).catch(() => {
     // no worries if it doesn't exist yet
   });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
-
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
-    },
-  });
-
-  await prisma.note.create({
-    data: {
-      title: "My first note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
-
-  await prisma.note.create({
-    data: {
-      title: "My second note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
+  const article = await prisma.article.create({ data: { content, image, introduction, title } })
 
   console.log(`Database has been seeded. 🌱`);
 }
+
 
 seed()
   .catch((e) => {
