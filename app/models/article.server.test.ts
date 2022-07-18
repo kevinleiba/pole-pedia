@@ -10,7 +10,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await prisma.$disconnect
+  await prisma.$disconnect()
 })
 
 test("can get articles", async () => {
