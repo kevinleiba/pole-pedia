@@ -17,6 +17,7 @@
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "test": "dotenv -e .env.test -- vitest",
+    "test:db": "dotenv -e .env.test -- vitest --config vitest.config.db.ts --no-threads",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
