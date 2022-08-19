@@ -8,7 +8,7 @@ async function seed() {
     // no worries if it doesn't exist yet
   });
 
-  const article = await prisma.article.create({ data: { content: articleMock.content, image: articleMock.image, introduction: articleMock.introduction, title: articleMock.title } })
+  // const article = await prisma.article.create({ data: { content: articleMock.content, image: articleMock.image, introduction: articleMock.introduction, title: articleMock.title } })
 
   console.log(`Database has been seeded. 🌱`);
 }
