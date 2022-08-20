@@ -1,30 +1,33 @@
 import { unSeed } from '../../prisma/unSeed'
-import { createArticle, getArticles } from './article.server'
-import { content, image, introduction, title } from '../../mocks/article'
-import { PrismaClient } from "@prisma/client";
+import * as informationMock from '../../mocks/information'
+import { createArticle, publishArticle } from './article.server'
+import { Article, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+let article: Article | null = null
 
-beforeAll(async () => {
-  await unSeed()
+describe("Article model", () => {
+  beforeAll(async () => {
+    await unSeed()
+  })
+
+  afterAll(async () => {
+    await unSeed()
+    await prisma.$disconnect()
+  })
+
+
+  test("Can create an article", async () => {
+    article = await createArticle()
+
+    expect(article.published).toBe(false)
+  })
+
+  test("Can publish an article", async () => {
+    await publishArticle({ articleUuid: article!.uuid })
+
+    const updatedArticle = await prisma.article.findFirstOrThrow({ where: { uuid: article?.uuid } })
+    expect(updatedArticle.published).toBe(true)
+  })
 })
 
-afterAll(async () => {
-  await prisma.$disconnect()
-})
-
-test("can get articles", async () => {
-  const articles = await getArticles()
-
-  expect(articles).toHaveLength(0)
-})
-
-test('can create an article', async () => {
-  await createArticle({ content, image, introduction, title })
-
-  const retrievedArticle = await prisma.article.findFirst({ where: { title } })
-  expect(retrievedArticle?.content).toBe(content)
-  expect(retrievedArticle?.image).toBe(image)
-  expect(retrievedArticle?.introduction).toBe(introduction)
-  expect(retrievedArticle?.title).toBe(title)
-})
