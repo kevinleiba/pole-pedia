@@ -7,12 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Section {
+  uuid                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content             String?
+  order               Int
+  title               String
+  article             Article?  @relation(fields: [articleUuid], references: [uuid])
+  articleUuid         String?   @db.Uuid
+  images              Image[]
+  subSections         Section[] @relation("SubSections")
+  subSectionsRelation Section[] @relation("SubSections")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model Image {
+  uuid        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String
+  url         String
+  section     Section? @relation(fields: [sectionUuid], references: [uuid])
+  sectionUuid String?  @db.Uuid
+  article     Article? @relation(fields: [articleUuid], references: [uuid])
+  articleUuid String?  @unique @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Information {
+  uuid        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String
+  title       String
+  article     Article  @relation(fields: [articleUuid], references: [uuid])
+  articleUuid String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Article {
-  id           Int      @id @default(autoincrement())
-  content      String?
-  createdAt    DateTime @default(now())
-  image        String?
-  introduction String?
-  title        String   @db.VarChar(255)
-  updatedAt    DateTime @updatedAt
+  uuid         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  published    Boolean       @default(true)
+  image        Image?
+  informations Information[]
+  sections     Section[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
