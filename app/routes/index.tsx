@@ -1,28 +1,26 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-
-import { getArticles } from "~/models/article.server";
+import { getAllArticles } from "~/models/article.server";
 
 type LoaderData = {
-  articles: Awaited<ReturnType<typeof getArticles>>;
+  articles: Awaited<ReturnType<typeof getAllArticles>>;
 };
 
 export const loader = async () => {
   return json<LoaderData>({
-    articles: await getArticles(),
+    articles: await getAllArticles(),
   });
 };
 
 
 export default function Index() {
   const { articles } = useLoaderData() as LoaderData;
-  console.log(articles);
 
   return (
     <div>
       {[articles.map(article => (
-        <div key={article.id}>
-          <h1>{article.title}</h1>
+        <div key={article.uuid}>
+          <Link to={`/article/${article.uuid}`} ><h1>{article.sections[0].title}</h1></Link>
         </div>)
       )]}
     </div>
