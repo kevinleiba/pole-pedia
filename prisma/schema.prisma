@@ -13,7 +13,7 @@ model Section {
   order               Int
   title               String
   article             Article?  @relation(fields: [articleUuid], references: [uuid])
-  articleUuid         String    @unique @db.Uuid
+  articleUuid         String?   @db.Uuid
   images              Image[]
   subSections         Section[] @relation("SubSections")
   subSectionsRelation Section[] @relation("SubSections")
@@ -26,9 +26,9 @@ model Image {
   description String
   url         String
   section     Section? @relation(fields: [sectionUuid], references: [uuid])
-  sectionUuid String   @db.Uuid
+  sectionUuid String?  @db.Uuid
   article     Article? @relation(fields: [articleUuid], references: [uuid])
-  articleUuid String   @unique @db.Uuid
+  articleUuid String?  @unique @db.Uuid
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -38,7 +38,7 @@ model Information {
   description String
   title       String
   article     Article  @relation(fields: [articleUuid], references: [uuid])
-  articleUuid String   @unique @db.Uuid
+  articleUuid String   @db.Uuid
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
