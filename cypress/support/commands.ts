@@ -26,6 +26,21 @@ declare global {
        *    cy.cleanupUser({ email: 'whatever@example.com' })
        */
       cleanupUser: typeof cleanupUser;
+
+      /**
+       * Clear all entries in the db
+       *
+       * @returns {typeof clearDb}
+       * @memberof Chainable
+       */
+      clearDb: typeof clearDb;
+      /**
+       * Launches prisma seed
+       *
+       * @returns {typeof clearDb}
+       * @memberof Chainable
+       */
+      seedDb: typeof seedDb;
     }
   }
 }
@@ -68,8 +83,22 @@ function deleteUserByEmail(email: string) {
   cy.clearCookie("__session");
 }
 
+function clearDb() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./prisma/autoUnseed`
+  );
+}
+
+function seedDb() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./prisma/autoSeed`
+  );
+}
+
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("cleanupUser", cleanupUser);
+Cypress.Commands.add("clearDb", clearDb)
+Cypress.Commands.add("seedDb", seedDb)
 
 /*
 eslint
