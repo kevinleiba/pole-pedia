@@ -7,12 +7,8 @@ describe("Index page", () => {
     cy.seedDb()
   })
 
-  it('Displays index page with all articles', () => {
+  it('Displays index page with all articles and correct links', () => {
     cy.visit('/')
-    cy.findByText(title)
-  })
-
-  it('Displays newly created article', () => {
-
+    cy.findByText(title).closest('a').should("have.attr", "href").and('match', /\/article\/.{8}-.{4}-.{4}-.{4}-.{12}/)
   })
 })

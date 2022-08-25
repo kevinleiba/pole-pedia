@@ -34,13 +34,22 @@ declare global {
        * @memberof Chainable
        */
       clearDb: typeof clearDb;
+
       /**
        * Launches prisma seed
        *
-       * @returns {typeof clearDb}
+       * @returns {typeof seedDb}
        * @memberof Chainable
        */
       seedDb: typeof seedDb;
+
+      /**
+       * forces uuid of article for easier navigation
+       *
+       * @returns {typeof setArticleUuid}
+       * @memberof Chainable
+       */
+      setArticleUuid: typeof setArticleUuid;
     }
   }
 }
@@ -95,10 +104,17 @@ function seedDb() {
   );
 }
 
+function setArticleUuid() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./cypress/support/set-article-uuid.ts`
+  );
+}
+
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("cleanupUser", cleanupUser);
 Cypress.Commands.add("clearDb", clearDb)
 Cypress.Commands.add("seedDb", seedDb)
+Cypress.Commands.add("setArticleUuid", setArticleUuid)
 
 /*
 eslint

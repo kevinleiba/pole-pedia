@@ -23,11 +23,51 @@ export default function ArticleDetailPage() {
   const data = useLoaderData() as LoaderData;
 
   const intro = data.article?.sections[0]
+  const img = intro?.images[0]
+  const informations = data.article?.informations
 
   return (
     <div>
       <h1>{intro?.title}</h1>
-      <p>{intro?.content}</p>
+      {intro?.content && JSON.parse(intro.content).blocks.map((block: { id: string, data: { text: string } }) => (
+        <p key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      ))}
+      {img ? <div>
+        <img src={img.url} alt={img.description} />
+        <p>{img.description}</p>
+      </div>
+        : null}
+      {informations?.map(({ uuid, title, description }) => (<div key={uuid}><p>{title}</p><p>{description}</p></div>))}
+
+      <div>
+        <p>Contents</p>
+        {data.article?.sections.slice(1).map((section) => (
+          <div key={section.uuid}>
+            <p>{section.title}</p>
+            <div>{section.subSections.map(subSection => (
+              <div key={subSection.uuid}>
+                <p>{subSection.title}</p>
+              </div>
+            ))}</div>
+          </div>
+        ))}
+      </div>
+      <hr></hr>
+      <div>
+        {data.article?.sections.slice(1).map((section) => (
+          <div key={section.uuid}>
+            <p>{section.title}</p>
+            <div>{section.subSections.map(subSection => (
+              <div key={subSection.uuid}>
+                <p>{subSection.title}</p>
+                {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
+                  <p key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                ))}
+              </div>
+            ))}</div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
