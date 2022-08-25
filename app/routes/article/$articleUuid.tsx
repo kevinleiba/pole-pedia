@@ -36,6 +36,34 @@ export default function ArticleDetailPage() {
       </div>
         : null}
       {informations?.map(({ uuid, title, description }) => (<div key={uuid}><p>{title}</p><p>{description}</p></div>))}
+
+      <div>
+        <p>Contents</p>
+        {data.article?.sections.slice(1).map((section) => (
+          <div key={section.uuid}>
+            <p>{section.title}</p>
+            <div>{section.subSections.map(subSection => (
+              <div key={subSection.uuid}>
+                <p>{subSection.title}</p>
+              </div>
+            ))}</div>
+          </div>
+        ))}
+      </div>
+      <hr></hr>
+      <div>
+        {data.article?.sections.slice(1).map((section) => (
+          <div key={section.uuid}>
+            <p>{section.title}</p>
+            <div>{section.subSections.map(subSection => (
+              <div key={subSection.uuid}>
+                <p>{subSection.title}</p>
+                <textarea value={subSection.content || ''} contentEditable={false}></textarea>
+              </div>
+            ))}</div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

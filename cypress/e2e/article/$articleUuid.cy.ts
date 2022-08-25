@@ -1,5 +1,5 @@
 // @ts-ignore
-import { title } from '../../../mocks/section'
+import { title, firstSubSection, firstSection } from '../../../mocks/section'
 // @ts-ignore
 import { description, url } from '../../../mocks/image'
 // @ts-ignore
@@ -25,5 +25,10 @@ describe("Article detail page", () => {
     // informations
     cy.findByText(infoDescription)
     cy.findByText(infoTitle)
+
+
+    // table of content
+    cy.findAllByText(firstSection.title).should('have.length', 2)
+    cy.findAllByText(firstSubSection.title).should('have.length', 2)
   })
 })

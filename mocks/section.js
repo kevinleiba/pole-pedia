@@ -21,9 +21,22 @@ const dbObject = {
   "updatedAt": "2022-08-20T22:06:51.921Z"
 }
 
+const firstSection = {
+  title: "FirstSection",
+  order: 1
+}
+
+const firstSubSection = {
+  title: "FirstSubSection",
+  content: "FirstSubSectionContent",
+  order: 0,
+}
+
 module.exports = {
   content,
   dbObject,
   order,
-  title
+  title,
+  firstSection,
+  firstSubSection
 }

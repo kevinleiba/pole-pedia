@@ -19,8 +19,8 @@ async function seed() {
   const introSection = await prisma.section.create({ data: { content: sectionMock.content, order: sectionMock.order, title: sectionMock.title, articleUuid: article.uuid, images: { connect: [{ uuid: introImage.uuid }] } } })
   const info = await prisma.information.create({ data: { description: informationMock.description, title: informationMock.title, articleUuid: article.uuid } })
 
-  const firstSubSection = await prisma.section.create({ data: { title: "FirstSubSection", content: "sub section content", order: 0 } })
-  const firstSection = await prisma.section.create({ data: { title: "FirstSection", order: 1, subSections: { connect: [{ uuid: firstSubSection.uuid }] }, articleUuid: article.uuid } })
+  const firstSubSection = await prisma.section.create({ data: { title: sectionMock.firstSubSection.title, content: sectionMock.firstSubSection.content, order: sectionMock.firstSubSection.order } })
+  const firstSection = await prisma.section.create({ data: { title: sectionMock.firstSection.title, order: sectionMock.firstSection.order, subSections: { connect: [{ uuid: firstSubSection.uuid }] }, articleUuid: article.uuid } })
 
 
   console.log(`Database has been seeded. 🌱`);
