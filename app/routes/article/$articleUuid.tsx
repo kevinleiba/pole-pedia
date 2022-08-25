@@ -29,7 +29,9 @@ export default function ArticleDetailPage() {
   return (
     <div>
       <h1>{intro?.title}</h1>
-      <p>{intro?.content}</p>
+      {intro?.content && JSON.parse(intro.content).blocks.map((block: { id: string, data: { text: string } }) => (
+        <p key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      ))}
       {img ? <div>
         <img src={img.url} alt={img.description} />
         <p>{img.description}</p>
@@ -58,7 +60,9 @@ export default function ArticleDetailPage() {
             <div>{section.subSections.map(subSection => (
               <div key={subSection.uuid}>
                 <p>{subSection.title}</p>
-                <textarea value={subSection.content || ''} contentEditable={false}></textarea>
+                {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
+                  <p key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                ))}
               </div>
             ))}</div>
           </div>

@@ -5,7 +5,7 @@ const rawContent = {
       "id": "Jb_J01Sf0B",
       "type": "paragraph",
       "data": {
-        "text": "<b>Batman</b>&nbsp;is a&nbsp;<a href=\"https://en.wikipedia.org/wiki/Superhero\">superhero</a> appearing in&nbsp;<a href=\"https://en.wikipedia.org/wiki/American_comic_book\">American comic books</a>&nbsp;published by&nbsp;<a href=\"https://en.wikipedia.org/wiki/DC_Comics\">DC Comics</a>. "
+        "text": "<b>Bartman</b>&nbsp;is a&nbsp;<a href=\"https://en.wikipedia.org/wiki/Superhero\">superhero</a> appearing in&nbsp;<a href=\"https://en.wikipedia.org/wiki/American_comic_book\">American comic books</a>&nbsp;published by&nbsp;<a href=\"https://en.wikipedia.org/wiki/DC_Comics\">DC Comics</a>. "
       }
     },
     {
@@ -57,11 +57,13 @@ const rawSubSectionContent = {
 
 const firstSubSection = {
   title: "FirstSubSection",
+  rawContent: rawSubSectionContent,
   content: JSON.stringify(rawSubSectionContent),
   order: 0,
 }
 
 module.exports = {
+  rawContent,
   content,
   dbObject,
   order,
