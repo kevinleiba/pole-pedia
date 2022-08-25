@@ -23,11 +23,19 @@ export default function ArticleDetailPage() {
   const data = useLoaderData() as LoaderData;
 
   const intro = data.article?.sections[0]
+  const img = intro?.images[0]
+  const informations = data.article?.informations
 
   return (
     <div>
       <h1>{intro?.title}</h1>
       <p>{intro?.content}</p>
+      {img ? <div>
+        <img src={img.url} alt={img.description} />
+        <p>{img.description}</p>
+      </div>
+        : null}
+      {informations?.map(({ uuid, title, description }) => (<div key={uuid}><p>{title}</p><p>{description}</p></div>))}
     </div>
   )
 }
