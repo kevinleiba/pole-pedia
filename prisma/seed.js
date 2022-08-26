@@ -22,6 +22,10 @@ async function seed() {
   const firstSubSection = await prisma.section.create({ data: { title: sectionMock.firstSubSection.title, content: sectionMock.firstSubSection.content, order: sectionMock.firstSubSection.order } })
   const firstSection = await prisma.section.create({ data: { title: sectionMock.firstSection.title, order: sectionMock.firstSection.order, subSections: { connect: [{ uuid: firstSubSection.uuid }] }, articleUuid: article.uuid } })
 
+  const firstSubSectionImage = await prisma.image.create({ data: { description: "Another random picsum image", url: "https://picsum.photos/id/237/1000/300" } })
+  const firstSubSectionSecondImage = await prisma.image.create({ data: { description: "This time is the last random picsum image", url: "https://picsum.photos/id/3/300/1000" } })
+  await prisma.section.update({ where: { uuid: firstSubSection.uuid }, data: { images: { connect: { uuid: firstSubSectionImage.uuid } } } })
+  await prisma.section.update({ where: { uuid: firstSubSection.uuid }, data: { images: { connect: { uuid: firstSubSectionSecondImage.uuid } } } })
 
   console.log(`Database has been seeded. 🌱`);
 }
