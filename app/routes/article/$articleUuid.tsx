@@ -84,19 +84,21 @@ export default function ArticleDetailPage() {
           </div>
         </div>
       </div>
-      <div className="separator" />
-      <div className="">
+      <div className="mt-l">
         {data.article?.sections.slice(1).map((section) => (
-          <div key={section.uuid}>
-            <p>{section.title}</p>
-            <div>{section.subSections.map(subSection => (
-              <div key={subSection.uuid}>
-                <p>{subSection.title}</p>
-                {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
-                  <p key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
-                ))}
-              </div>
-            ))}</div>
+          <div key={section.uuid} id={section.uuid}>
+            <h2>{section.title}</h2>
+            <div className="separator" />
+            <div>
+              {section.subSections.map(subSection => (
+                <div key={subSection.uuid} id={subSection.uuid}>
+                  <h3 className="mb-m">{subSection.title}</h3>
+                  {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
+                    <p className="mb-s" key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
