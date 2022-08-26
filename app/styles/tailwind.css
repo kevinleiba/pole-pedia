@@ -601,6 +601,10 @@ p {
   --tw-backdrop-sepia:  ;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -673,6 +677,10 @@ p {
   height: 1rem;
 }
 
+.max-h-\[292px\] {
+  max-height: 292px;
+}
+
 .min-h-full {
   min-height: 100%;
 }
@@ -693,6 +701,10 @@ p {
   width: 20rem;
 }
 
+.w-\[300px\] {
+  width: 300px;
+}
+
 .max-w-md {
   max-width: 28rem;
 }
@@ -703,6 +715,14 @@ p {
 
 .max-w-\[256px\] {
   max-width: 256px;
+}
+
+.max-w-\[300px\] {
+  max-width: 300px;
+}
+
+.max-w-\[292px\] {
+  max-width: 292px;
 }
 
 .flex-1 {
@@ -834,6 +854,10 @@ p {
 
 .p-m {
   padding: 16px;
+}
+
+.p-xs {
+  padding: 4px;
 }
 
 .px-8 {

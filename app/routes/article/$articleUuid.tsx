@@ -65,7 +65,7 @@ export default function ArticleDetailPage() {
           <div className="py-s">
             {img ? (
               <div className="flex flex-col items-center px-l mb-s">
-                <img className="object-contain max-w-[256px]" src={img.url} alt={img.description} />
+                <img className="object-contain max-w-[292px] max-h-[292px] m-auto" src={img.url} alt={img.description} />
                 <p className="mt-s text-center">{img.description}</p>
               </div>
             )
@@ -93,9 +93,23 @@ export default function ArticleDetailPage() {
               {section.subSections.map(subSection => (
                 <div key={subSection.uuid} id={subSection.uuid}>
                   <h3 className="mb-m">{subSection.title}</h3>
-                  {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
-                    <p className="mb-s" key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
-                  ))}
+                  <div className="flex">
+                    <div className="flex-1">
+                      {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
+                        <p className="mb-s" key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                      ))}
+                    </div>
+                    {subSection.images.length > 0 ? (
+                      <div className="flex flex-col items-center">
+                        {subSection.images.map(image => (
+                          <div key={image.uuid} className="bg-lightGrey border border-darkGrey p-xs mb-m">
+                            <img className="border border-darkGrey object-contain max-w-[292px] max-h-[292px] m-auto" src={image.url} alt={image.description} />
+                            <p className="text-center">{image.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               ))}
             </div>
