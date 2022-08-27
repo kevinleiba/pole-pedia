@@ -1,5 +1,5 @@
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { ActionFunction, json, LoaderFunction, redirect } from '@remix-run/server-runtime';
+import { ActionFunction, json, LoaderFunction } from '@remix-run/server-runtime';
 import { useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
 import Section from '~/components/Section';
@@ -37,7 +37,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 
-function FullSection({ uuid, content, title, articleUuid, order, withContent }: { uuid: string, content: string, title: string, articleUuid: string, order: number, withContent?: boolean }) {
+function FullSection({ uuid, content, title, articleUuid, order, withContent, sectionUuid }: { uuid: string, content: string, title: string, articleUuid: string, order: number, withContent?: boolean, sectionUuid?: string }) {
   const [statefullTitle, setStatefullTitle] = useState(title)
   const [statefullContent, setStatefullContent] = useState(content)
   const [statefullUuid, setStatefullUuid] = useState(uuid)
@@ -48,7 +48,7 @@ function FullSection({ uuid, content, title, articleUuid, order, withContent }: 
   useEffect(() => {
     if (initialRender.current) initialRender.current = false
     else {
-      fetcher.submit({ uuid, content: statefullContent, title: statefullTitle, articleUuid, order: String(order) }, { method: "post" })
+      fetcher.submit({ uuid, content: statefullContent, title: statefullTitle, articleUuid, order: String(order), sectionUuid: sectionUuid || '' }, { method: "post" })
     }
   }, [statefullTitle, statefullContent])
 
@@ -76,7 +76,7 @@ function ArticleEditPage() {
     <div className='p-m'>
       <h1>Article Edition</h1>
       <div className="separator" />
-      <div className='mb-m'>
+      <div className='mb-l'>
         <FullSection
           uuid={intro?.uuid || ''}
           content={intro?.content || ''}
@@ -86,15 +86,30 @@ function ArticleEditPage() {
           withContent
         />
       </div>
-      {data.article?.sections.slice(1).map(({ uuid, content, title, order }) => (
-        <div className='mb-m' key={uuid}>
-          <FullSection
-            uuid={uuid || ''}
-            content={content || ''}
-            title={title || ''}
-            articleUuid={data.article?.uuid || ''}
-            order={order}
-          />
+      {data.article?.sections.slice(1).map(({ uuid, content, title, order, subSections }) => (
+        <div key={uuid}>
+          <div>
+            <FullSection
+              uuid={uuid || ''}
+              content={content || ''}
+              title={title || ''}
+              articleUuid={data.article?.uuid || ''}
+              order={order}
+            />
+          </div>
+          {subSections.map((subSection) => (
+            <div className='ml-m' key={subSection.uuid}>
+              <FullSection
+                uuid={subSection.uuid || ''}
+                content={subSection.content || ''}
+                title={subSection.title || ''}
+                articleUuid={''}
+                order={subSection.order}
+                withContent
+                sectionUuid={uuid}
+              />
+            </div>
+          ))}
         </div>
       ))}
     </div>
