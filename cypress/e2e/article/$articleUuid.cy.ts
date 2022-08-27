@@ -9,9 +9,9 @@ import { dbObject } from '../../../mocks/article'
 
 describe("Article detail page", () => {
   before(() => {
-    cy.clearDb()
-    cy.seedDb()
-    cy.setArticleUuid()
+    // cy.clearDb()
+    // cy.seedDb()
+    // cy.setArticleUuid()
   })
 
   it('Displays article page with its details', () => {
@@ -35,5 +35,19 @@ describe("Article detail page", () => {
 
     // sections & sub sections
     cy.get("#section-0-subsection-0").invoke('html').should('eq', firstSubSection.content)
+  })
+
+  const newTitle = "Cypress"
+  const newIntro = "I am the new intro"
+
+  it('Edits article', () => {
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    cy.findByDisplayValue(title).focus().type("{selectAll}").type(newTitle)
+    cy.findByDisplayValue(newTitle)
+
+    cy.get(".ProseMirror").invoke('html').should('eq', content)
+    cy.get(".ProseMirror").type("{ctrl}a").type("{backspace}").type(newIntro)
+    cy.get(".ProseMirror").invoke('text').should('eq', newIntro)
   })
 })
