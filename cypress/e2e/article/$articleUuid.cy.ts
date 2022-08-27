@@ -9,9 +9,9 @@ import { dbObject } from '../../../mocks/article'
 
 describe("Article detail page", () => {
   before(() => {
-    // cy.clearDb()
-    // cy.seedDb()
-    // cy.setArticleUuid()
+    cy.clearDb()
+    cy.seedDb()
+    cy.setArticleUuid()
   })
 
   it('Displays article page with its details', () => {
@@ -43,15 +43,15 @@ describe("Article detail page", () => {
   it('Edits article', () => {
     cy.visit(`/article/${dbObject.uuid}/edit`)
 
-    cy.findByDisplayValue(title).focus().type("{selectAll}").type(newTitle)
+    cy.findByDisplayValue(title).focus().type("{selectAll}").type(newTitle).blur()
     cy.findByDisplayValue(newTitle)
 
-    cy.get(".ProseMirror").invoke('html').should('eq', content)
-    cy.get(".ProseMirror").type("{ctrl}a").type("{backspace}").type(newIntro)
-    cy.get(".ProseMirror").invoke('text').should('eq', newIntro)
+    cy.get(".ProseMirror").first().invoke('html').should('eq', content)
+    cy.get(".ProseMirror").first().type("{ctrl}a").type("{backspace}").type(newIntro).blur()
+    cy.get(".ProseMirror").first().invoke('text').should('eq', newIntro)
 
-    // cy.visit(`/article/${dbObject.uuid}`)
-    // cy.findAllByText(newTitle).should('have.length', 2)
-    // cy.get("#intro-content").invoke('html').should('eq', newIntro)
+    cy.visit(`/article/${dbObject.uuid}`)
+    cy.findAllByText(newTitle).should('have.length', 2)
+    cy.get("#intro-content").invoke('text').should('eq', newIntro)
   })
 })
