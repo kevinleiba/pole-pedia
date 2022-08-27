@@ -4,17 +4,18 @@ import { useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
 import Section from '~/components/Section';
 import { getArticle } from "~/models/article.server";
-import { updateSection } from '~/models/section.server';
+import { createSection, updateSection } from '~/models/section.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
 
-  const title = formData.get("title")
-  const content = formData.get("content")
-  const uuid = formData.get("uuid")
+  const title = formData.get("title") as string
+  const content = formData.get("content") as string
+  const uuid = formData.get("uuid") as string
+  const articleUuid = formData.get("articleUuid") as string
+  const order = Number(formData.get("order")) as number
 
-  if (!uuid) return null
-  const updatedSection = await updateSection({ sectionUuid: uuid as string, title: title as string, content: content as string })
+  const updatedSection = uuid ? await updateSection({ sectionUuid: uuid, title, content }) : await createSection({ content, order, title, articleUuid })
 
   return json(updatedSection)
 };
@@ -36,10 +37,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 
-function FullSection({ uuid, content, title, articleUuid }: { uuid: string, content: string, title: string, articleUuid: string }) {
+function FullSection({ uuid, content, title, articleUuid, order }: { uuid: string, content: string, title: string, articleUuid: string, order: number }) {
   const [statefullTitle, setStatefullTitle] = useState(title)
   const [statefullContent, setStatefullContent] = useState(content)
-
+  const [statefullUuid, setStatefullUuid] = useState(uuid)
 
   const fetcher = useFetcher();
   const initialRender = useRef(true)
@@ -47,9 +48,13 @@ function FullSection({ uuid, content, title, articleUuid }: { uuid: string, cont
   useEffect(() => {
     if (initialRender.current) initialRender.current = false
     else {
-      fetcher.submit({ uuid, content: statefullContent, title: statefullTitle }, { method: "post" })
+      fetcher.submit({ uuid, content: statefullContent, title: statefullTitle, articleUuid, order: String(order) }, { method: "post" })
     }
   }, [statefullTitle, statefullContent])
+
+  useEffect(() => {
+    if (fetcher.data?.uuid !== statefullUuid) setStatefullUuid(fetcher.data?.uuid)
+  }, [fetcher.data?.uuid])
 
   return (
     <div>
@@ -67,9 +72,18 @@ function ArticleEditPage() {
   const data = useLoaderData() as LoaderData;
 
   return (
-    data.article?.sections.map(({ uuid, content, title }) => (
-      <FullSection uuid={uuid} content={content || ''} title={title || ''} articleUuid={data.article?.uuid || ''} key={uuid} />
-    ))
+    <div className='p-m'>
+      <h1>Article Edition</h1>
+      <div className="separator" />
+      {data.article?.sections.map(({ uuid, content, title, order }) => (
+        <FullSection
+          uuid={uuid || ''}
+          content={content || ''}
+          title={title || ''}
+          articleUuid={data.article?.uuid || ''}
+          order={order} key={uuid} />
+      ))}
+    </div>
   )
 }
 
