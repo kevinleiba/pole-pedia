@@ -29,4 +29,14 @@ export function addImageToSection({ sectionUuid, imageUuid }: { sectionUuid: Sec
   })
 }
 
+export function updateSection({ sectionUuid, content, title }: { content: Section['content'], title: Section['title'], sectionUuid: Section['uuid'] }) {
+  return prisma.section.update({
+    where: { uuid: sectionUuid },
+    data: {
+      content,
+      title
+    }
+  })
+}
+
 // @TODO --> Add reorder functions

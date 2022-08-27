@@ -3,7 +3,7 @@ import * as sectionMock from '../../mocks/section'
 import * as articleMock from '../../mocks/article'
 import * as imageMock from '../../mocks/image'
 import { PrismaClient, Section } from "@prisma/client";
-import { addImageToSection, createSection, createSubSection } from './section.server';
+import { addImageToSection, createSection, createSubSection, updateSection } from './section.server';
 
 const prisma = new PrismaClient();
 let section: Section | null = null
@@ -57,6 +57,16 @@ describe("Section model", () => {
     const updatedSection = await prisma.section.findFirst({ where: { uuid: section!.uuid }, include: { images: true } })
     expect(updatedSection?.images[0].url).toBe(image.url)
     expect(updatedSection?.images[0].description).toBe(image.description)
+  })
+
+  test("Can update a section", async () => {
+    const title = 'updatedTitle'
+    const content = '<p>Updated Content</p>'
+
+    await updateSection({ title, content, sectionUuid: section!?.uuid })
+    const updatedSection = await prisma.section.findFirst({ where: { uuid: section!.uuid } })
+    expect(updatedSection!.title).toBe(title)
+    expect(updatedSection!.content).toBe(content)
   })
 
 })
