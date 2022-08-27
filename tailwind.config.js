@@ -22,6 +22,7 @@ module.exports = {
         m: "15.1px",
         s: "14px",
         xs: "12.1px",
+        xxs: "11px",
       },
       fontFamily: {
         sans: ["sans-serif"],
@@ -81,6 +82,19 @@ module.exports = {
         "code": {
           backgroundColor: colors.black,
           color: colors.white
+        },
+        ".editorButton": {
+          fontSize: theme("fontSize.xs"),
+          backgroundColor: theme("colors.lightGrey"),
+          borderColor: theme("colors.darkGrey"),
+          borderWidth: "1px",
+          padding: theme("spacing.xs"),
+          borderRadius: theme("spacing.xs"),
+          marginRight: theme("spacing.s"),
+          "&:hover": {
+            textDecoration: "underline",
+            cursor: "pointer"
+          }
         }
       });
     }),
