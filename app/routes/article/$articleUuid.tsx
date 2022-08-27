@@ -32,7 +32,7 @@ export default function ArticleDetailPage() {
       <div className="separator" />
       <div className="flex">
         <div className="flex-1">
-          <div dangerouslySetInnerHTML={{ __html: intro?.content || '' }} className="space-y-s mb-m" />
+          <div dangerouslySetInnerHTML={{ __html: intro?.content || '' }} className="space-y-s mb-m" id="intro-content" />
           <div className="border border-darkGrey bg-lightGrey inline-block px-s">
             <p className="bold text-center my-s">Contents</p>
             {data.article?.sections.slice(1).map((section) => (
@@ -83,17 +83,17 @@ export default function ArticleDetailPage() {
         </div>
       </div>
       <div className="mt-l">
-        {data.article?.sections.slice(1).map((section) => (
+        {data.article?.sections.slice(1).map((section, sectionIndex) => (
           <div className="mb-m" key={section.uuid} id={section.uuid}>
             <h2>{section.title}</h2>
             <div className="separator" />
             <div>
-              {section.subSections.map(subSection => (
+              {section.subSections.map((subSection, subSectionIndex) => (
                 <div className="mb-m" key={subSection.uuid} id={subSection.uuid}>
                   <h3 className="mb-m">{subSection.title}</h3>
                   <div className="flex">
                     <div className="flex-1">
-                      <div dangerouslySetInnerHTML={{ __html: subSection.content || '' }} className="space-y-s" />
+                      <div dangerouslySetInnerHTML={{ __html: subSection.content || '' }} className="space-y-s" id={`section-${sectionIndex}-subsection-${subSectionIndex}`} />
                     </div>
                     {subSection.images.length > 0 ? (
                       <div className="flex flex-col items-center">

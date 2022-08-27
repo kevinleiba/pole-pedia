@@ -1,5 +1,5 @@
 // @ts-ignore
-import { title, rawContent, firstSubSection, firstSection } from '../../../mocks/section'
+import { title, content, firstSubSection, firstSection } from '../../../mocks/section'
 // @ts-ignore
 import { description, url } from '../../../mocks/image'
 // @ts-ignore
@@ -18,12 +18,8 @@ describe("Article detail page", () => {
     cy.visit(`/article/${dbObject.uuid}`)
 
     // intro
-    cy.findByText(title)
-    /**
-     * skip because needs parsing...
-     * cy.findByText(rawContent.blocks[0].data.text)
-     * cy.findByText(rawContent.blocks[1].data.text)
-     */
+    cy.findAllByText(title).should('have.length', 2)
+    cy.get("#intro-content").invoke('html').should('eq', content)
 
     // image
     cy.findByRole("img").should('have.attr', 'src').and('contain', url)
@@ -38,6 +34,6 @@ describe("Article detail page", () => {
     cy.findAllByText(firstSubSection.title).should('have.length', 2)
 
     // sections & sub sections
-    // cy.findByText(firstSubSection.rawContent.blocks[0].data.text)
+    cy.get("#section-0-subsection-0").invoke('html').should('eq', firstSubSection.content)
   })
 })
