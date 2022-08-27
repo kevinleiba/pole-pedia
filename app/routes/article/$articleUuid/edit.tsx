@@ -37,7 +37,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 
-function FullSection({ uuid, content, title, articleUuid, order }: { uuid: string, content: string, title: string, articleUuid: string, order: number }) {
+function FullSection({ uuid, content, title, articleUuid, order, withContent }: { uuid: string, content: string, title: string, articleUuid: string, order: number, withContent?: boolean }) {
   const [statefullTitle, setStatefullTitle] = useState(title)
   const [statefullContent, setStatefullContent] = useState(content)
   const [statefullUuid, setStatefullUuid] = useState(uuid)
@@ -61,8 +61,8 @@ function FullSection({ uuid, content, title, articleUuid, order }: { uuid: strin
       <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m' type="text" defaultValue={title} onBlur={(e) => {
         setStatefullTitle(e.target.value)
       }} />
-      <Section onBlur={setStatefullContent}
-        content={content || ''} />
+      {withContent && <Section onBlur={setStatefullContent}
+        content={content || ''} />}
       <fetcher.Form method='post' action={`/article/${articleUuid}/edit`} />
     </div>
   )
@@ -82,7 +82,9 @@ function ArticleEditPage() {
           content={intro?.content || ''}
           title={intro?.title || ''}
           articleUuid={data.article?.uuid || ''}
-          order={intro?.order ?? 0} />
+          order={intro?.order ?? 0}
+          withContent
+        />
       </div>
       {data.article?.sections.slice(1).map(({ uuid, content, title, order }) => (
         <div className='mb-m' key={uuid}>
@@ -91,7 +93,8 @@ function ArticleEditPage() {
             content={content || ''}
             title={title || ''}
             articleUuid={data.article?.uuid || ''}
-            order={order} />
+            order={order}
+          />
         </div>
       ))}
     </div>
