@@ -32,9 +32,7 @@ export default function ArticleDetailPage() {
       <div className="separator" />
       <div className="flex">
         <div className="flex-1">
-          {intro?.content && JSON.parse(intro.content).blocks.map((block: { id: string, data: { text: string } }) => (
-            <p className="mb-s" key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
-          ))}
+          <div dangerouslySetInnerHTML={{ __html: intro?.content || '' }} className="space-y-s mb-m" />
           <div className="border border-darkGrey bg-lightGrey inline-block px-s">
             <p className="bold text-center my-s">Contents</p>
             {data.article?.sections.slice(1).map((section) => (
@@ -86,18 +84,16 @@ export default function ArticleDetailPage() {
       </div>
       <div className="mt-l">
         {data.article?.sections.slice(1).map((section) => (
-          <div key={section.uuid} id={section.uuid}>
+          <div className="mb-m" key={section.uuid} id={section.uuid}>
             <h2>{section.title}</h2>
             <div className="separator" />
             <div>
               {section.subSections.map(subSection => (
-                <div key={subSection.uuid} id={subSection.uuid}>
+                <div className="mb-m" key={subSection.uuid} id={subSection.uuid}>
                   <h3 className="mb-m">{subSection.title}</h3>
                   <div className="flex">
                     <div className="flex-1">
-                      {subSection.content && JSON.parse(subSection.content).blocks.map((block: { id: string, data: { text: string } }) => (
-                        <p className="mb-s" key={block.id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
-                      ))}
+                      <div dangerouslySetInnerHTML={{ __html: subSection.content || '' }} className="space-y-s" />
                     </div>
                     {subSection.images.length > 0 ? (
                       <div className="flex flex-col items-center">
