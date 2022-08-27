@@ -49,5 +49,9 @@ describe("Article detail page", () => {
     cy.get(".ProseMirror").invoke('html').should('eq', content)
     cy.get(".ProseMirror").type("{ctrl}a").type("{backspace}").type(newIntro)
     cy.get(".ProseMirror").invoke('text').should('eq', newIntro)
+
+    // cy.visit(`/article/${dbObject.uuid}`)
+    // cy.findAllByText(newTitle).should('have.length', 2)
+    // cy.get("#intro-content").invoke('html').should('eq', newIntro)
   })
 })

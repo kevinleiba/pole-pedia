@@ -6,10 +6,10 @@ import Link from '@tiptap/extension-link'
 
 interface SectionProps {
   content?: string,
-  onUpdate: (content: string) => void
+  onBlur: (content: string) => void
 }
 
-function Section({ content, onUpdate }: SectionProps) {
+function Section({ content, onBlur }: SectionProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -18,8 +18,8 @@ function Section({ content, onUpdate }: SectionProps) {
       }),
     ],
     content,
-    onUpdate({ editor }) {
-      onUpdate(editor.getHTML())
+    onBlur({ editor }) {
+      onBlur(editor.getHTML())
     }
   })
 
