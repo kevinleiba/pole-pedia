@@ -1,25 +1,7 @@
-const rawContent = {
-  "time": 1661464712461,
-  "blocks": [
-    {
-      "id": "Jb_J01Sf0B",
-      "type": "paragraph",
-      "data": {
-        "text": "<b>Bartman</b>&nbsp;is a&nbsp;<a href=\"https://en.wikipedia.org/wiki/Superhero\">superhero</a> appearing in&nbsp;<a href=\"https://en.wikipedia.org/wiki/American_comic_book\">American comic books</a>&nbsp;published by&nbsp;<a href=\"https://en.wikipedia.org/wiki/DC_Comics\">DC Comics</a>. "
-      }
-    },
-    {
-      "id": "tu9ca_v6gn",
-      "type": "paragraph",
-      "data": {
-        "text": "The character was created by artist&nbsp;<a href=\"https://en.wikipedia.org/wiki/Bob_Kane\">Bob Kane</a>&nbsp;and writer&nbsp;<a href=\"https://en.wikipedia.org/wiki/Bill_Finger\">Bill Finger</a>"
-      }
-    }
-  ],
-  "version": "2.24.3"
-}
-
-const content = JSON.stringify(rawContent)
+const content = `
+<p><b>Bartman</b>&nbsp;is a&nbsp;<a href=\"https://en.wikipedia.org/wiki/Superhero\">superhero</a> appearing in&nbsp;<a href=\"https://en.wikipedia.org/wiki/American_comic_book\">American comic books</a>&nbsp;published by&nbsp;<a href=\"https://en.wikipedia.org/wiki/DC_Comics\">DC Comics</a>.</p>
+<p>The character was created by artist&nbsp;<a href=\"https://en.wikipedia.org/wiki/Bob_Kane\">Bob Kane</a>&nbsp;and writer&nbsp;<a href=\"https://en.wikipedia.org/wiki/Bill_Finger\">Bill Finger</a></p>
+`
 
 const order = 0
 const title = "Batman"
@@ -41,29 +23,14 @@ const firstSection = {
   order: 1
 }
 
-const rawSubSectionContent = {
-  "time": 1661464791123,
-  "blocks": [
-    {
-      "id": "3zLlHn-wxQ",
-      "type": "paragraph",
-      "data": {
-        "text": "FirstSubSectionContent"
-      }
-    }
-  ],
-  "version": "2.24.3"
-}
 
 const firstSubSection = {
   title: "FirstSubSection",
-  rawContent: rawSubSectionContent,
-  content: JSON.stringify(rawSubSectionContent),
+  content: `<p>FirstSubSectionContent</p>`,
   order: 0,
 }
 
 module.exports = {
-  rawContent,
   content,
   dbObject,
   order,
