@@ -625,14 +625,14 @@ code {
   margin: auto;
 }
 
-.my-xl {
-  margin-top: 64px;
-  margin-bottom: 64px;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .my-s {
@@ -645,17 +645,24 @@ code {
   margin-right: 8px;
 }
 
-.my-4 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .mt-1 {
   margin-top: 0.25rem;
 }
 
 .ml-2 {
   margin-left: 0.5rem;
+}
+
+.mb-m {
+  margin-bottom: 16px;
+}
+
+.mb-l {
+  margin-bottom: 32px;
+}
+
+.ml-m {
+  margin-left: 16px;
 }
 
 .mb-s {
@@ -672,10 +679,6 @@ code {
 
 .mt-l {
   margin-top: 32px;
-}
-
-.mb-m {
-  margin-bottom: 16px;
 }
 
 .block {
@@ -704,6 +707,10 @@ code {
 
 .max-h-\[292px\] {
   max-height: 292px;
+}
+
+.min-h-\[300px\] {
+  min-height: 300px;
 }
 
 .min-h-full {
@@ -798,6 +805,11 @@ code {
   border-bottom-width: 1px;
 }
 
+.border-darkGrey {
+  --tw-border-opacity: 1;
+  border-color: rgb(162 169 177 / var(--tw-border-opacity));
+}
+
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -806,11 +818,6 @@ code {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
-}
-
-.border-darkGrey {
-  --tw-border-opacity: 1;
-  border-color: rgb(162 169 177 / var(--tw-border-opacity));
 }
 
 .border-blue-500 {
@@ -863,6 +870,10 @@ code {
      object-fit: contain;
 }
 
+.p-s {
+  padding: 8px;
+}
+
 .p-4 {
   padding: 1rem;
 }
@@ -904,6 +915,21 @@ code {
   padding-right: 1rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-xs {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
 .px-s {
   padding-left: 8px;
   padding-right: 8px;
@@ -917,16 +943,6 @@ code {
 .px-l {
   padding-left: 32px;
   padding-right: 32px;
-}
-
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
-.px-3 {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
 }
 
 .pt-1 {
@@ -963,6 +979,10 @@ code {
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-xxl {
+  font-size: 28.8px;
 }
 
 .font-medium {
