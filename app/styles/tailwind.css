@@ -460,6 +460,26 @@ p {
   background-color: #000;
 }
 
+code {
+  background-color: #000;
+  color: #fff;
+}
+
+.editorButton {
+  font-size: 12.1px;
+  background-color: #F8F9FA ;
+  border-color: #a2a9b1;
+  border-width: 1px;
+  padding: 4px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.editorButton:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -605,6 +625,11 @@ p {
   margin: auto;
 }
 
+.my-xl {
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -701,24 +726,12 @@ p {
   width: 20rem;
 }
 
-.w-\[300px\] {
-  width: 300px;
-}
-
 .max-w-md {
   max-width: 28rem;
 }
 
 .max-w-\[320px\] {
   max-width: 320px;
-}
-
-.max-w-\[256px\] {
-  max-width: 256px;
-}
-
-.max-w-\[300px\] {
-  max-width: 300px;
 }
 
 .max-w-\[292px\] {
@@ -753,6 +766,12 @@ p {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-s > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(8px * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(8px * var(--tw-space-y-reverse));
 }
 
 .rounded {
@@ -952,6 +971,10 @@ p {
 
 .font-bold {
   font-weight: 700;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-loose {
