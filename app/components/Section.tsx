@@ -20,6 +20,11 @@ function Section({ content, onBlur }: SectionProps) {
     content,
     onBlur({ editor }) {
       onBlur(editor.getHTML())
+    },
+    editorProps: {
+      attributes: {
+        class: "border border-darkGrey p-s min-h-[300px] rounded rounded-m"
+      }
     }
   })
 
@@ -50,7 +55,7 @@ function Section({ content, onBlur }: SectionProps) {
   }
 
   return (
-    <div className='my-xl'>
+    <div>
       {editor && <BubbleMenu tippyOptions={{ duration: 100 }} editor={editor}>
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}

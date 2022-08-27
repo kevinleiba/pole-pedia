@@ -58,7 +58,7 @@ function FullSection({ uuid, content, title, articleUuid, order }: { uuid: strin
 
   return (
     <div>
-      <input type="text" defaultValue={title} onBlur={(e) => {
+      <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m' type="text" defaultValue={title} onBlur={(e) => {
         setStatefullTitle(e.target.value)
       }} />
       <Section onBlur={setStatefullContent}
@@ -70,18 +70,29 @@ function FullSection({ uuid, content, title, articleUuid, order }: { uuid: strin
 
 function ArticleEditPage() {
   const data = useLoaderData() as LoaderData;
+  const intro = data.article?.sections[0]
 
   return (
     <div className='p-m'>
       <h1>Article Edition</h1>
       <div className="separator" />
-      {data.article?.sections.map(({ uuid, content, title, order }) => (
+      <div className='mb-m'>
         <FullSection
-          uuid={uuid || ''}
-          content={content || ''}
-          title={title || ''}
+          uuid={intro?.uuid || ''}
+          content={intro?.content || ''}
+          title={intro?.title || ''}
           articleUuid={data.article?.uuid || ''}
-          order={order} key={uuid} />
+          order={intro?.order ?? 0} />
+      </div>
+      {data.article?.sections.slice(1).map(({ uuid, content, title, order }) => (
+        <div className='mb-m' key={uuid}>
+          <FullSection
+            uuid={uuid || ''}
+            content={content || ''}
+            title={title || ''}
+            articleUuid={data.article?.uuid || ''}
+            order={order} />
+        </div>
       ))}
     </div>
   )
