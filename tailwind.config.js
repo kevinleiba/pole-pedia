@@ -77,6 +77,10 @@ module.exports = {
           marginBottom: theme("spacing.m"),
           height: "1px",
           backgroundColor: colors.black
+        },
+        "code": {
+          backgroundColor: colors.black,
+          color: colors.white
         }
       });
     }),

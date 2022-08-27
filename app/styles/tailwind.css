@@ -460,6 +460,11 @@ p {
   background-color: #000;
 }
 
+code {
+  background-color: #000;
+  color: #fff;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -605,6 +610,11 @@ p {
   margin: auto;
 }
 
+.my-xl {
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -623,6 +633,10 @@ p {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.mr-m {
+  margin-right: 16px;
 }
 
 .mt-1 {
@@ -701,24 +715,12 @@ p {
   width: 20rem;
 }
 
-.w-\[300px\] {
-  width: 300px;
-}
-
 .max-w-md {
   max-width: 28rem;
 }
 
 .max-w-\[320px\] {
   max-width: 320px;
-}
-
-.max-w-\[256px\] {
-  max-width: 256px;
-}
-
-.max-w-\[300px\] {
-  max-width: 300px;
 }
 
 .max-w-\[292px\] {
@@ -779,6 +781,11 @@ p {
   border-bottom-width: 1px;
 }
 
+.border-darkGrey {
+  --tw-border-opacity: 1;
+  border-color: rgb(162 169 177 / var(--tw-border-opacity));
+}
+
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -789,14 +796,14 @@ p {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-darkGrey {
-  --tw-border-opacity: 1;
-  border-color: rgb(162 169 177 / var(--tw-border-opacity));
-}
-
 .border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
+.bg-lightGrey {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 249 250 / var(--tw-bg-opacity));
 }
 
 .bg-blue-500 {
@@ -822,11 +829,6 @@ p {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-}
-
-.bg-lightGrey {
-  --tw-bg-opacity: 1;
-  background-color: rgb(248 249 250 / var(--tw-bg-opacity));
 }
 
 .bg-lightBlue {
@@ -858,6 +860,16 @@ p {
 
 .p-xs {
   padding: 4px;
+}
+
+.px-xs {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.py-xs {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .px-8 {
@@ -952,6 +964,10 @@ p {
 
 .font-bold {
   font-weight: 700;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-loose {
