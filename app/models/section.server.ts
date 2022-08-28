@@ -12,12 +12,17 @@ export function createSection({ content, order, title, articleUuid }: { content:
   })
 }
 
-export function createSubSection({ content, order, title, sectionUuid }: { content: Section['content'], order: Section['order'], title: Section['title'], sectionUuid: Section['uuid'] }) {
-  return prisma.section.update({
-    where: { uuid: sectionUuid }, data: {
-      subSections: { create: { content, order, title } }
+export async function createSubSection({ content, order, title, sectionUuid }: { content: Section['content'], order: Section['order'], title: Section['title'], sectionUuid: Section['uuid'] }) {
+  const subSection = await prisma.section.create({ data: { content, order, title } })
+  await prisma.section.update({
+    where: { uuid: sectionUuid },
+    data: {
+      subSections: {
+        connect: { uuid: subSection.uuid }
+      }
     }
   })
+  return subSection
 }
 
 export function addImageToSection({ sectionUuid, imageUuid }: { sectionUuid: Section['uuid'], imageUuid: Image['uuid'] }) {
@@ -25,7 +30,7 @@ export function addImageToSection({ sectionUuid, imageUuid }: { sectionUuid: Sec
     where: { uuid: sectionUuid },
     data: {
       images: { connect: { uuid: imageUuid } }
-    }
+    },
   })
 }
 

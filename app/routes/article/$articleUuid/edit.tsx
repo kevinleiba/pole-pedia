@@ -1,10 +1,14 @@
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { ActionFunction, json, LoaderFunction } from '@remix-run/server-runtime';
 import { useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
+import produce from "immer"
+import { v4 as uuidv4 } from 'uuid';
+
+
 import Section from '~/components/Section';
 import { getArticle } from "~/models/article.server";
-import { createSection, updateSection } from '~/models/section.server';
+import { createSection, createSubSection, updateSection } from '~/models/section.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -13,11 +17,16 @@ export const action: ActionFunction = async ({ request }) => {
   const content = formData.get("content") as string
   const uuid = formData.get("uuid") as string
   const articleUuid = formData.get("articleUuid") as string
+  const sectionUuid = formData.get("sectionUuid") as string
   const order = Number(formData.get("order")) as number
 
-  const updatedSection = uuid ? await updateSection({ sectionUuid: uuid, title, content }) : await createSection({ content, order, title, articleUuid })
-
-  return json(updatedSection)
+  if (uuid) {
+    return json(await updateSection({ sectionUuid: uuid, title, content }))
+  } else if (articleUuid) {
+    return json(await createSection({ content, order, title, articleUuid }))
+  } else {
+    return json(await createSubSection({ content, order, title, sectionUuid }))
+  }
 };
 
 
@@ -48,12 +57,32 @@ function FullSection({ uuid, content, title, articleUuid, order, withContent, se
   useEffect(() => {
     if (initialRender.current) initialRender.current = false
     else {
-      fetcher.submit({ uuid, content: statefullContent, title: statefullTitle, articleUuid, order: String(order), sectionUuid: sectionUuid || '' }, { method: "post" })
+
+      console.log(JSON.stringify({
+        uuid: statefullUuid,
+        content: statefullContent,
+        title: statefullTitle,
+        articleUuid,
+        order: String(order),
+        sectionUuid: sectionUuid || ''
+      }))
+
+
+      fetcher.submit(
+        {
+          uuid: statefullUuid,
+          content: statefullContent,
+          title: statefullTitle,
+          articleUuid,
+          order: String(order),
+          sectionUuid: sectionUuid || ''
+        },
+        { method: "post" })
     }
   }, [statefullTitle, statefullContent])
 
   useEffect(() => {
-    if (fetcher.data?.uuid !== statefullUuid) setStatefullUuid(fetcher.data?.uuid)
+    if (fetcher.data?.uuid) setStatefullUuid(fetcher.data?.uuid)
   }, [fetcher.data?.uuid])
 
   return (
@@ -68,9 +97,27 @@ function FullSection({ uuid, content, title, articleUuid, order, withContent, se
   )
 }
 
+const EMPTY_SECTION = { content: '', uuid: '', title: '', images: [], createdAt: new Date(), updatedAt: new Date() }
+
+
 function ArticleEditPage() {
   const data = useLoaderData() as LoaderData;
-  const intro = data.article?.sections[0]
+
+  const [intro, setIntro] = useState(data.article?.sections[0] || { ...EMPTY_SECTION, fakeUuid: uuidv4(), order: 0 })
+  const [sections, setSections] = useState(data.article?.sections.slice(1) || [])
+
+  function addSubSection({ sectionIndex }: { sectionIndex: number }) {
+    setSections((oldSections) => {
+      const order = oldSections[sectionIndex].subSections[oldSections[sectionIndex].subSections.length - 1].order + 1
+
+      return produce(oldSections, draft => {
+        draft[sectionIndex]
+          .subSections
+          // @ts-ignore
+          .push({ ...EMPTY_SECTION, fakeUuid: uuidv4(), order, articleUuid: '' })
+      })
+    })
+  }
 
   return (
     <div className='p-m'>
@@ -86,32 +133,38 @@ function ArticleEditPage() {
           withContent
         />
       </div>
-      {data.article?.sections.slice(1).map(({ uuid, content, title, order, subSections }) => (
-        <div key={uuid}>
+      {sections.map((section, sectionIndex) => (
+        // @ts-ignore
+        <div className='mb-l' key={section.uuid || section.fakeUuid}>
           <div>
             <FullSection
-              uuid={uuid || ''}
-              content={content || ''}
-              title={title || ''}
+              uuid={section.uuid || ''}
+              content={section.content || ''}
+              title={section.title || ''}
               articleUuid={data.article?.uuid || ''}
-              order={order}
+              order={section.order}
             />
           </div>
-          {subSections.map((subSection) => (
-            <div className='ml-m' key={subSection.uuid}>
-              <FullSection
-                uuid={subSection.uuid || ''}
-                content={subSection.content || ''}
-                title={subSection.title || ''}
-                articleUuid={''}
-                order={subSection.order}
-                withContent
-                sectionUuid={uuid}
-              />
-            </div>
-          ))}
+          <div className="ml-m">
+            {section.subSections.map((subSection) => (
+              // @ts-ignore
+              <div className='mb-l' key={subSection.uuid || subSection.fakeUuid}>
+                <FullSection
+                  uuid={subSection.uuid || ''}
+                  content={subSection.content || ''}
+                  title={subSection.title || ''}
+                  articleUuid=""
+                  order={subSection.order}
+                  withContent
+                  sectionUuid={section.uuid}
+                />
+              </div>
+            ))}
+            <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>
+          </div>
         </div>
       ))}
+      <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
     </div>
   )
 }

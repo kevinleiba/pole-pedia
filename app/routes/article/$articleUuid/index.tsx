@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { json, LoaderFunction } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 
@@ -28,6 +28,7 @@ export default function ArticleDetailPage() {
 
   return (
     <div className="p-m">
+      <Link to={`/article/${data.article?.uuid}/edit`}><p className="text-right">Edit</p></Link>
       <h1>{intro?.title}</h1>
       <div className="separator" />
       <div className="flex">
