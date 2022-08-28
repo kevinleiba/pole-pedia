@@ -69,17 +69,6 @@ function FullSection(
   useEffect(() => {
     if (initialRender.current) initialRender.current = false
     else {
-
-      console.log(JSON.stringify({
-        uuid: statefullUuid,
-        content: statefullContent,
-        title: statefullTitle,
-        articleUuid,
-        order: String(order),
-        sectionUuid: sectionUuid || ''
-      }))
-
-
       fetcher.submit(
         {
           uuid: statefullUuid,
@@ -139,7 +128,8 @@ function ArticleEditPage() {
 
   function addSection() {
     setSections((oldSections) => {
-      const order = oldSections[oldSections.length - 1].order + 1
+      const lastSection = oldSections[oldSections.length - 1]
+      const order = lastSection ? lastSection.order + 1 : 1
 
       return produce(oldSections, draft => {
         draft.push({

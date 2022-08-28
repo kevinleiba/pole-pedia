@@ -127,3 +127,52 @@ describe("Article detail page", () => {
     cy.get("#section-1-subsection-0").invoke('text').should('eq', lastSubSectionContent)
   })
 })
+
+describe("create article", () => {
+  before(() => {
+    cy.clearDb()
+    cy.seedDb()
+    cy.setArticleUuid()
+  })
+
+  it("can create an article", () => {
+    const title = "Create an Article... article"
+    const content = "It is actually not that simple...."
+
+
+    const sectionTitle = "Technical challenges"
+
+    const subSectionTitle = "Cypress is new to me"
+    const subSectionContent = "So I need to familiarise with its assertions and stuf..."
+
+    cy.visit("/article/new")
+
+    cy.url().should("match", /\/article\/.{8}-.{4}-.{4}-.{4}-.{12}/)
+
+    // intro
+    cy.get("input").type(title)
+    cy.get(".ProseMirror").first().type("{ctrl}a").type("{backspace}").type(content).blur()
+    cy.get(".ProseMirror").first().invoke('text').should('eq', content)
+
+    // section
+    cy.findByText('Add Section', { exact: false }).click()
+
+    cy.get("input").eq(1).type(sectionTitle)
+    cy.findByText('Add Sub Section', { exact: false }).click()
+
+    cy.get("input").eq(2).type(subSectionTitle)
+    cy.get(".ProseMirror").eq(1).type("{ctrl}a").type("{backspace}").type(subSectionContent).blur()
+    cy.get(".ProseMirror").eq(1).invoke('text').should('eq', subSectionContent)
+    cy.wait(500)
+
+    cy.findByText("View article", { exact: false }).click()
+
+    cy.findAllByText(title).should('have.length', 2)
+    cy.get("#intro-content").invoke('text').should('eq', content)
+
+    cy.findAllByText(sectionTitle).should('have.length', 2)
+    cy.findAllByText(subSectionTitle).should('have.length', 2)
+    cy.get("#section-0-subsection-0").invoke('text').should('eq', subSectionContent)
+
+  })
+})
