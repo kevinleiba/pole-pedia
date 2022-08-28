@@ -1,4 +1,4 @@
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { ActionFunction, json, LoaderFunction } from '@remix-run/server-runtime';
 import { useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
@@ -112,6 +112,7 @@ function ArticleEditPage() {
           ))}
         </div>
       ))}
+      <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
     </div>
   )
 }
