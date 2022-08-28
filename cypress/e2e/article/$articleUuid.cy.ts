@@ -200,25 +200,22 @@ describe.only("Add informations & images", () => {
   })
 
 
-  it.skip("Adds information", () => {
+  it("Adds information", () => {
     cy.visit(`/article/${dbObject.uuid}/edit`)
 
     const firstInfoTitle = "Info1"
     const firstInfoContent = "Content1"
-    const secondInfoTitle = "Info2"
-    const secondInfoContent = "Content2"
 
-    cy.findByText("Add information").click()
-    cy.get("input").eq(1).type(firstInfoTitle)
-    cy.get("input").eq(2).type(firstInfoContent)
-
-    cy.get("input").eq(1).should('have.value', firstInfoTitle)
-    cy.get("input").eq(2).should('have.value', firstInfoContent)
-
-    cy.findByText("Add information").click()
+    cy.findByText("Add Information", { exact: false }).click()
     cy.get("input").eq(3).type(firstInfoTitle)
-    cy.get("input").eq(4).type(firstInfoContent)
+    cy.get("input").eq(4).type(firstInfoContent).blur()
 
+    cy.get("input").eq(3).should('have.value', firstInfoTitle)
+    cy.get("input").eq(4).should('have.value', firstInfoContent)
+    cy.wait(500)
 
+    cy.visit(`/article/${dbObject.uuid}`)
+    cy.findByText(firstInfoTitle)
+    cy.findByText(firstInfoContent)
   })
 })

@@ -139,7 +139,7 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   }
 
   return (
-    <div className='w-[200px] h-[100px]' >
+    <div className='w-[200px] border border-darkGrey rounded rounded-m' >
       <input defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
       <input defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
     </div>
@@ -154,6 +154,8 @@ function ArticleEditPage() {
 
   const [intro, setIntro] = useState(data.article?.sections[0] || { ...EMPTY_SECTION, fakeUuid: uuidv4(), order: 0 })
   const [sections, setSections] = useState(data.article?.sections.slice(1) || [])
+  const [informations, setInformations] = useState(data.article?.informations || [])
+
 
   function addSubSection({ sectionIndex }: { sectionIndex: number }) {
     setSections((oldSections) => {
@@ -203,6 +205,10 @@ function ArticleEditPage() {
     })
   }
 
+  function addInformation() {
+    setInformations(infos => ([...infos, { uuid: '', fakeUuid: uuidv4(), description: '', title: '', articleUuid: data.article?.uuid || '', createdAt: new Date(), updatedAt: new Date() }]))
+  }
+
   return (
     <div className='p-m'>
       <h1>Article Edition</h1>
@@ -221,10 +227,12 @@ function ArticleEditPage() {
             withContent
           />
         </div>
-        <div className='flex'>
-          {data.article?.informations.map(({ title, description, uuid }) => (
-            <Information key={uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
+        <div className='flex mt-m p-s'>
+          {/* @ts-ignore */}
+          {informations.map(({ title, description, uuid, fakeUuid }) => (
+            <Information key={uuid || fakeUuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
           ))}
+          <button onClick={addInformation}>Add Information</button>
         </div>
       </div>
       <div>
