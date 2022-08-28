@@ -45,8 +45,20 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return json<LoaderData>({ article });
 };
 
+interface FullSectionArgs {
+  setSectionUuid?: ({ uuid, content, title }: { uuid: string, content: string, title: string }) => void;
+  uuid: string,
+  content: string,
+  title: string,
+  articleUuid: string,
+  order: number,
+  withContent?: boolean,
+  sectionUuid?: string
+}
 
-function FullSection({ uuid, content, title, articleUuid, order, withContent, sectionUuid }: { uuid: string, content: string, title: string, articleUuid: string, order: number, withContent?: boolean, sectionUuid?: string }) {
+function FullSection(
+  { setSectionUuid, uuid, content, title, articleUuid, order, withContent, sectionUuid }: FullSectionArgs
+) {
   const [statefullTitle, setStatefullTitle] = useState(title)
   const [statefullContent, setStatefullContent] = useState(content)
   const [statefullUuid, setStatefullUuid] = useState(uuid)
@@ -82,7 +94,12 @@ function FullSection({ uuid, content, title, articleUuid, order, withContent, se
   }, [statefullTitle, statefullContent])
 
   useEffect(() => {
-    if (fetcher.data?.uuid) setStatefullUuid(fetcher.data?.uuid)
+    if (fetcher.data?.uuid) {
+      setStatefullUuid(fetcher.data?.uuid)
+      setSectionUuid?.(
+        { uuid: fetcher.data.uuid, content: statefullContent, title: statefullTitle },
+      )
+    }
   }, [fetcher.data?.uuid])
 
   return (
@@ -108,7 +125,8 @@ function ArticleEditPage() {
 
   function addSubSection({ sectionIndex }: { sectionIndex: number }) {
     setSections((oldSections) => {
-      const order = oldSections[sectionIndex].subSections[oldSections[sectionIndex].subSections.length - 1].order + 1
+      const prevSubSections = oldSections[sectionIndex].subSections[oldSections[sectionIndex].subSections.length - 1]
+      const order = prevSubSections ? prevSubSections.order + 1 : 0
 
       return produce(oldSections, draft => {
         draft[sectionIndex]
@@ -119,12 +137,48 @@ function ArticleEditPage() {
     })
   }
 
+  function addSection() {
+    setSections((oldSections) => {
+      const order = oldSections[oldSections.length - 1].order + 1
+
+      return produce(oldSections, draft => {
+        draft.push({
+          // @ts-ignore
+          ...EMPTY_SECTION, fakeUuid: uuidv4(), order, articleUuid: data.article?.uuid || '', subSections: []
+        })
+      })
+    })
+  }
+
+  function setIntroUuid({ uuid, content, title }: { uuid: string, content: string, title: string }) {
+    setIntro(oldSections => {
+      return produce(oldSections, draft => {
+        draft.uuid = uuid
+        draft.content = content
+        draft.title = title
+      })
+    })
+  }
+
+  function setSectionUuid({ uuid, content, title, sectionIndex }: { uuid: string, content: string, title: string, sectionIndex: number }) {
+    setSections(oldSections => {
+      return produce(oldSections, draft => {
+        draft[sectionIndex].uuid = uuid
+        draft[sectionIndex].content = content
+        draft[sectionIndex].title = title
+      })
+    })
+  }
+
   return (
     <div className='p-m'>
       <h1>Article Edition</h1>
       <div className="separator" />
       <div className='mb-l'>
         <FullSection
+          setSectionUuid={
+            setIntroUuid
+          }
           uuid={intro?.uuid || ''}
           content={intro?.content || ''}
           title={intro?.title || ''}
@@ -133,37 +187,43 @@ function ArticleEditPage() {
           withContent
         />
       </div>
-      {sections.map((section, sectionIndex) => (
-        // @ts-ignore
-        <div className='mb-l' key={section.uuid || section.fakeUuid}>
-          <div>
-            <FullSection
-              uuid={section.uuid || ''}
-              content={section.content || ''}
-              title={section.title || ''}
-              articleUuid={data.article?.uuid || ''}
-              order={section.order}
-            />
+      <div>
+        {sections.map((section, sectionIndex) => (
+          // @ts-ignore
+          <div className='mb-l' key={section.uuid || section.fakeUuid}>
+            <div>
+              <FullSection
+                setSectionUuid={
+                  ({ uuid, content, title }: { uuid: string, content: string, title: string }) => { setSectionUuid({ uuid, content, title, sectionIndex }) }
+                }
+                uuid={section.uuid || ''}
+                content={section.content || ''}
+                title={section.title || ''}
+                articleUuid={data.article?.uuid || ''}
+                order={section.order}
+              />
+            </div>
+            <div className="ml-m">
+              {section.subSections.map((subSection) => (
+                // @ts-ignore
+                <div className='mb-l' key={subSection.uuid || subSection.fakeUuid}>
+                  <FullSection
+                    uuid={subSection.uuid || ''}
+                    content={subSection.content || ''}
+                    title={subSection.title || ''}
+                    articleUuid=""
+                    order={subSection.order}
+                    withContent
+                    sectionUuid={section.uuid}
+                  />
+                </div>
+              ))}
+              <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>
+            </div>
           </div>
-          <div className="ml-m">
-            {section.subSections.map((subSection) => (
-              // @ts-ignore
-              <div className='mb-l' key={subSection.uuid || subSection.fakeUuid}>
-                <FullSection
-                  uuid={subSection.uuid || ''}
-                  content={subSection.content || ''}
-                  title={subSection.title || ''}
-                  articleUuid=""
-                  order={subSection.order}
-                  withContent
-                  sectionUuid={section.uuid}
-                />
-              </div>
-            ))}
-            <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>
-          </div>
-        </div>
-      ))}
+        ))}
+        <button onClick={() => { addSection() }}>Add Section</button>
+      </div>
       <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
     </div>
   )
