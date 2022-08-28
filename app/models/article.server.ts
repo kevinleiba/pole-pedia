@@ -11,7 +11,17 @@ export function publishArticle({ articleUuid }: { articleUuid: Article['uuid'] }
 }
 
 export function getArticle({ articleUuid }: { articleUuid: Article['uuid'] }) {
-  return prisma.article.findFirst({ where: { uuid: articleUuid }, include: { sections: { orderBy: { order: 'asc' }, include: { images: true, subSections: { include: { images: true } } } }, informations: true } })
+  return prisma.article.findFirst({
+    where: { uuid: articleUuid },
+    include: {
+      sections: {
+        orderBy: { order: 'asc' },
+        include: {
+          images: true, subSections: { include: { images: true }, orderBy: { order: 'asc' } }
+        }
+      }, informations: true
+    }
+  })
 }
 
 export function getAllArticles() {
