@@ -25,5 +25,5 @@ export function getArticle({ articleUuid }: { articleUuid: Article['uuid'] }) {
 }
 
 export function getAllArticles() {
-  return prisma.article.findMany({ include: { sections: true } })
+  return prisma.article.findMany({ include: { sections: { orderBy: { order: 'asc' } } } })
 }
