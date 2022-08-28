@@ -103,6 +103,49 @@ function FullSection(
   )
 }
 
+interface InformationProps {
+  title: string;
+  description: string;
+  uuid?: string
+  articleUuid: string;
+}
+
+function Information({ articleUuid, title, description, uuid }: InformationProps) {
+  const titleRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLInputElement | null>(null)
+
+  const [statefullUuid, setStatefullUuid] = useState(uuid || '')
+
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    if (fetcher.data?.uuid) {
+      setStatefullUuid(fetcher.data?.uuid)
+    }
+  }, [fetcher.data?.uuid])
+
+  function updateInfo() {
+    if (titleRef.current?.value && descriptionRef.current?.value) {
+      fetcher.submit(
+        {
+          title: titleRef.current.value,
+          description: descriptionRef.current.value,
+          uuid: statefullUuid,
+          articleUuid,
+        },
+        { method: "post", action: '/information' }
+      )
+    }
+  }
+
+  return (
+    <div className='w-[200px] h-[100px]' >
+      <input defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
+      <input defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
+    </div>
+  )
+}
+
 const EMPTY_SECTION = { content: '', uuid: '', title: '', images: [], createdAt: new Date(), updatedAt: new Date() }
 
 
@@ -165,17 +208,24 @@ function ArticleEditPage() {
       <h1>Article Edition</h1>
       <div className="separator" />
       <div className='mb-l'>
-        <FullSection
-          setSectionUuid={
-            setIntroUuid
-          }
-          uuid={intro?.uuid || ''}
-          content={intro?.content || ''}
-          title={intro?.title || ''}
-          articleUuid={data.article?.uuid || ''}
-          order={intro?.order ?? 0}
-          withContent
-        />
+        <div>
+          <FullSection
+            setSectionUuid={
+              setIntroUuid
+            }
+            uuid={intro?.uuid || ''}
+            content={intro?.content || ''}
+            title={intro?.title || ''}
+            articleUuid={data.article?.uuid || ''}
+            order={intro?.order ?? 0}
+            withContent
+          />
+        </div>
+        <div className='flex'>
+          {data.article?.informations.map(({ title, description, uuid }) => (
+            <Information key={uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
+          ))}
+        </div>
       </div>
       <div>
         {sections.map((section, sectionIndex) => (

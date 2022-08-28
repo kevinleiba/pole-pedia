@@ -176,3 +176,49 @@ describe("create article", () => {
 
   })
 })
+
+describe.only("Add informations & images", () => {
+  before(() => {
+    cy.clearDb()
+    cy.seedDb()
+    cy.setArticleUuid()
+  })
+
+  it('Updates information', () => {
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    const newInfoTitle = 'NEW INFO TITLE'
+    const newInfoDescription = 'new info description'
+
+    cy.findByDisplayValue(infoTitle).type("{selectAll}").type(newInfoTitle)
+    cy.findByDisplayValue(infoDescription).type("{selectAll}").type(newInfoDescription).blur()
+    cy.wait(500)
+
+    cy.visit(`/article/${dbObject.uuid}`)
+    cy.findByText(newInfoTitle)
+    cy.findByText(newInfoDescription)
+  })
+
+
+  it.skip("Adds information", () => {
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    const firstInfoTitle = "Info1"
+    const firstInfoContent = "Content1"
+    const secondInfoTitle = "Info2"
+    const secondInfoContent = "Content2"
+
+    cy.findByText("Add information").click()
+    cy.get("input").eq(1).type(firstInfoTitle)
+    cy.get("input").eq(2).type(firstInfoContent)
+
+    cy.get("input").eq(1).should('have.value', firstInfoTitle)
+    cy.get("input").eq(2).should('have.value', firstInfoContent)
+
+    cy.findByText("Add information").click()
+    cy.get("input").eq(3).type(firstInfoTitle)
+    cy.get("input").eq(4).type(firstInfoContent)
+
+
+  })
+})
