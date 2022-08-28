@@ -99,4 +99,31 @@ describe("Article detail page", () => {
     cy.findAllByText(secondSubSectionTitle).should('have.length', 2) // 2 bcz of table of content
     cy.get("#section-0-subsection-1").invoke('text').should('eq', secondSubSectionContent)
   })
+
+  it("Adds section and a subsection", () => {
+    const newSectionTitle = "Last and new section"
+    const lastSubSectionTitle = "Last sub section title"
+    const lastSubSectionContent = "Last content.... maybe?"
+
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    cy.findByText('Add Section', { exact: false }).click()
+    cy.get('input').eq(4).type(newSectionTitle).blur()
+    cy.wait(500)
+
+
+    cy.findAllByText('Add Sub Section', { exact: false }).eq(1).click()
+    cy.get('input').eq(5).type(lastSubSectionTitle).blur()
+    cy.wait(500)
+    cy.get(".ProseMirror").eq(3).type("{ctrl}a").type("{backspace}").type(lastSubSectionContent).blur()
+    cy.get(".ProseMirror").eq(3).invoke('text').should('eq', lastSubSectionContent)
+    cy.wait(500)
+
+
+    // go back on detail page
+    cy.visit(`/article/${dbObject.uuid}`)
+
+    cy.findAllByText(newSectionTitle).should('have.length', 2) // 2 bcz of table of content
+    cy.get("#section-1-subsection-0").invoke('text').should('eq', lastSubSectionContent)
+  })
 })
