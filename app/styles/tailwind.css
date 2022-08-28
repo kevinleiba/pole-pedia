@@ -673,6 +673,10 @@ code {
   margin-bottom: 32px;
 }
 
+.mt-m {
+  margin-top: 16px;
+}
+
 .ml-m {
   margin-left: 16px;
 }
@@ -743,6 +747,10 @@ code {
 
 .w-80 {
   width: 20rem;
+}
+
+.w-\[200px\] {
+  width: 200px;
 }
 
 .max-w-md {

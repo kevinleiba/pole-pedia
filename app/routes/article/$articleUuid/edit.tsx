@@ -93,12 +93,55 @@ function FullSection(
 
   return (
     <div>
-      <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m' type="text" defaultValue={title} onBlur={(e) => {
+      <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m section-title' type="text" defaultValue={title} onBlur={(e) => {
         setStatefullTitle(e.target.value)
       }} />
       {withContent && <Section onBlur={setStatefullContent}
         content={content || ''} />}
       <fetcher.Form method='post' action={`/article/${articleUuid}/edit`} />
+    </div>
+  )
+}
+
+interface InformationProps {
+  title: string;
+  description: string;
+  uuid?: string
+  articleUuid: string;
+}
+
+function Information({ articleUuid, title, description, uuid }: InformationProps) {
+  const titleRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLInputElement | null>(null)
+
+  const [statefullUuid, setStatefullUuid] = useState(uuid || '')
+
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    if (fetcher.data?.uuid) {
+      setStatefullUuid(fetcher.data?.uuid)
+    }
+  }, [fetcher.data?.uuid])
+
+  function updateInfo() {
+    if (titleRef.current?.value && descriptionRef.current?.value) {
+      fetcher.submit(
+        {
+          title: titleRef.current.value,
+          description: descriptionRef.current.value,
+          uuid: statefullUuid,
+          articleUuid,
+        },
+        { method: "post", action: '/information' }
+      )
+    }
+  }
+
+  return (
+    <div className='w-[200px] border border-darkGrey rounded rounded-m' >
+      <input className='information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
+      <input className='information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
     </div>
   )
 }
@@ -111,6 +154,8 @@ function ArticleEditPage() {
 
   const [intro, setIntro] = useState(data.article?.sections[0] || { ...EMPTY_SECTION, fakeUuid: uuidv4(), order: 0 })
   const [sections, setSections] = useState(data.article?.sections.slice(1) || [])
+  const [informations, setInformations] = useState(data.article?.informations || [])
+
 
   function addSubSection({ sectionIndex }: { sectionIndex: number }) {
     setSections((oldSections) => {
@@ -160,22 +205,35 @@ function ArticleEditPage() {
     })
   }
 
+  function addInformation() {
+    setInformations(infos => ([...infos, { uuid: '', fakeUuid: uuidv4(), description: '', title: '', articleUuid: data.article?.uuid || '', createdAt: new Date(), updatedAt: new Date() }]))
+  }
+
   return (
     <div className='p-m'>
       <h1>Article Edition</h1>
       <div className="separator" />
       <div className='mb-l'>
-        <FullSection
-          setSectionUuid={
-            setIntroUuid
-          }
-          uuid={intro?.uuid || ''}
-          content={intro?.content || ''}
-          title={intro?.title || ''}
-          articleUuid={data.article?.uuid || ''}
-          order={intro?.order ?? 0}
-          withContent
-        />
+        <div>
+          <FullSection
+            setSectionUuid={
+              setIntroUuid
+            }
+            uuid={intro?.uuid || ''}
+            content={intro?.content || ''}
+            title={intro?.title || ''}
+            articleUuid={data.article?.uuid || ''}
+            order={intro?.order ?? 0}
+            withContent
+          />
+        </div>
+        <div className='flex mt-m p-s'>
+          {/* @ts-ignore */}
+          {informations.map(({ title, description, uuid, fakeUuid }) => (
+            <Information key={uuid || fakeUuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
+          ))}
+          <button onClick={addInformation}>Add Information</button>
+        </div>
       </div>
       <div>
         {sections.map((section, sectionIndex) => (
