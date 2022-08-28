@@ -673,6 +673,10 @@ code {
   margin-bottom: 32px;
 }
 
+.mt-m {
+  margin-top: 16px;
+}
+
 .ml-m {
   margin-left: 16px;
 }
@@ -715,10 +719,6 @@ code {
 
 .h-4 {
   height: 1rem;
-}
-
-.h-\[100px\] {
-  height: 100px;
 }
 
 .max-h-\[292px\] {

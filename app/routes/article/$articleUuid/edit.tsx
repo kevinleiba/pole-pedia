@@ -93,7 +93,7 @@ function FullSection(
 
   return (
     <div>
-      <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m' type="text" defaultValue={title} onBlur={(e) => {
+      <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m section-title' type="text" defaultValue={title} onBlur={(e) => {
         setStatefullTitle(e.target.value)
       }} />
       {withContent && <Section onBlur={setStatefullContent}
@@ -140,8 +140,8 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
 
   return (
     <div className='w-[200px] border border-darkGrey rounded rounded-m' >
-      <input defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
-      <input defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
+      <input className='information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
+      <input className='information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
     </div>
   )
 }

@@ -88,7 +88,7 @@ describe("Article detail page", () => {
     cy.visit(`/article/${dbObject.uuid}/edit`)
 
     cy.findByText('Add Sub Section', { exact: false }).click()
-    cy.get('input').eq(3).type(secondSubSectionTitle).blur()
+    cy.get('.section-title').eq(3).type(secondSubSectionTitle).blur()
     cy.get(".ProseMirror").eq(2).type("{ctrl}a").type("{backspace}").type(secondSubSectionContent).blur()
     cy.get(".ProseMirror").eq(2).invoke('text').should('eq', secondSubSectionContent)
     cy.wait(500)
@@ -108,12 +108,12 @@ describe("Article detail page", () => {
     cy.visit(`/article/${dbObject.uuid}/edit`)
 
     cy.findByText('Add Section', { exact: false }).click()
-    cy.get('input').eq(4).type(newSectionTitle).blur()
+    cy.get('.section-title').eq(4).type(newSectionTitle).blur()
     cy.wait(500)
 
 
     cy.findAllByText('Add Sub Section', { exact: false }).eq(1).click()
-    cy.get('input').eq(5).type(lastSubSectionTitle).blur()
+    cy.get('.section-title').eq(5).type(lastSubSectionTitle).blur()
     cy.wait(500)
     cy.get(".ProseMirror").eq(3).type("{ctrl}a").type("{backspace}").type(lastSubSectionContent).blur()
     cy.get(".ProseMirror").eq(3).invoke('text').should('eq', lastSubSectionContent)
@@ -150,17 +150,17 @@ describe("create article", () => {
     cy.url().should("match", /\/article\/.{8}-.{4}-.{4}-.{4}-.{12}/)
 
     // intro
-    cy.get("input").type(title)
+    cy.get(".section-title").type(title)
     cy.get(".ProseMirror").first().type("{ctrl}a").type("{backspace}").type(content).blur()
     cy.get(".ProseMirror").first().invoke('text').should('eq', content)
 
     // section
     cy.findByText('Add Section', { exact: false }).click()
 
-    cy.get("input").eq(1).type(sectionTitle)
+    cy.get(".section-title").eq(1).type(sectionTitle)
     cy.findByText('Add Sub Section', { exact: false }).click()
 
-    cy.get("input").eq(2).type(subSectionTitle)
+    cy.get(".section-title").eq(2).type(subSectionTitle)
     cy.get(".ProseMirror").eq(1).type("{ctrl}a").type("{backspace}").type(subSectionContent).blur()
     cy.get(".ProseMirror").eq(1).invoke('text').should('eq', subSectionContent)
     cy.wait(500)
@@ -177,7 +177,7 @@ describe("create article", () => {
   })
 })
 
-describe.only("Add informations & images", () => {
+describe("Add informations", () => {
   before(() => {
     cy.clearDb()
     cy.seedDb()
@@ -207,11 +207,11 @@ describe.only("Add informations & images", () => {
     const firstInfoContent = "Content1"
 
     cy.findByText("Add Information", { exact: false }).click()
-    cy.get("input").eq(3).type(firstInfoTitle)
-    cy.get("input").eq(4).type(firstInfoContent).blur()
+    cy.get(".information-title").eq(1).type(firstInfoTitle)
+    cy.get(".information-description").eq(1).type(firstInfoContent).blur()
 
-    cy.get("input").eq(3).should('have.value', firstInfoTitle)
-    cy.get("input").eq(4).should('have.value', firstInfoContent)
+    cy.get(".information-title").eq(1).should('have.value', firstInfoTitle)
+    cy.get(".information-description").eq(1).should('have.value', firstInfoContent)
     cy.wait(500)
 
     cy.visit(`/article/${dbObject.uuid}`)
