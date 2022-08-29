@@ -725,6 +725,10 @@ code {
   max-height: 292px;
 }
 
+.max-h-\[128px\] {
+  max-height: 128px;
+}
+
 .min-h-\[300px\] {
   min-height: 300px;
 }
@@ -763,6 +767,10 @@ code {
 
 .max-w-\[292px\] {
   max-width: 292px;
+}
+
+.max-w-\[128px\] {
+  max-width: 128px;
 }
 
 .flex-1 {

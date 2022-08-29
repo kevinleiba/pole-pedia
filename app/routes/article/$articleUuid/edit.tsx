@@ -60,9 +60,9 @@ interface FullSectionArgs {
 function FullSection(
   { setSectionUuid, uuid, content, title, articleUuid, order, withContent, sectionUuid }: FullSectionArgs
 ) {
-  const [statefullTitle, setStatefullTitle] = useState(title)
-  const [statefullContent, setStatefullContent] = useState(content)
-  const [statefullUuid, setStatefullUuid] = useState(uuid)
+  const [statefulTitle, setStatefulTitle] = useState(title)
+  const [statefulContent, setStatefulContent] = useState(content)
+  const [statefulUuid, setStatefulUuid] = useState(uuid)
 
   const fetcher = useFetcher();
   const initialRender = useRef(true)
@@ -72,22 +72,22 @@ function FullSection(
     else {
       fetcher.submit(
         {
-          uuid: statefullUuid,
-          content: statefullContent,
-          title: statefullTitle,
+          uuid: statefulUuid,
+          content: statefulContent,
+          title: statefulTitle,
           articleUuid,
           order: String(order),
           sectionUuid: sectionUuid || ''
         },
         { method: "post" })
     }
-  }, [statefullTitle, statefullContent])
+  }, [statefulTitle, statefulContent])
 
   useEffect(() => {
     if (fetcher.data?.uuid) {
-      setStatefullUuid(fetcher.data?.uuid)
+      setStatefulUuid(fetcher.data?.uuid)
       setSectionUuid?.(
-        { uuid: fetcher.data.uuid, content: statefullContent, title: statefullTitle },
+        { uuid: fetcher.data.uuid, content: statefulContent, title: statefulTitle },
       )
     }
   }, [fetcher.data?.uuid])
@@ -95,9 +95,9 @@ function FullSection(
   return (
     <div>
       <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m section-title' type="text" defaultValue={title} onBlur={(e) => {
-        setStatefullTitle(e.target.value)
+        setStatefulTitle(e.target.value)
       }} />
-      {withContent && <Section onBlur={setStatefullContent}
+      {withContent && <Section onBlur={setStatefulContent}
         content={content || ''} />}
       <fetcher.Form method='post' action={`/article/${articleUuid}/edit`} />
     </div>
@@ -115,13 +115,13 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   const titleRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
 
-  const [statefullUuid, setStatefullUuid] = useState(uuid || '')
+  const [statefulUuid, setStatefulUuid] = useState(uuid || '')
 
   const fetcher = useFetcher()
 
   useEffect(() => {
     if (fetcher.data?.uuid) {
-      setStatefullUuid(fetcher.data?.uuid)
+      setStatefulUuid(fetcher.data?.uuid)
     }
   }, [fetcher.data?.uuid])
 
@@ -131,7 +131,7 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
         {
           title: titleRef.current.value,
           description: descriptionRef.current.value,
-          uuid: statefullUuid,
+          uuid: statefulUuid,
           articleUuid,
         },
         { method: "post", action: '/information' }
@@ -161,7 +161,7 @@ function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: Imag
   const updatedUuid = useRef(uuid)
   const urlRef = useRef<HTMLInputElement>(null)
   const descriptionRef = useRef<HTMLInputElement>(null)
-  const [statefullUrl, setStatefullUrl] = useState(url)
+  const [statefulUrl, setStatefulUrl] = useState(url)
 
   function updateImage() {
     const newUrl = urlRef.current?.value
@@ -192,8 +192,8 @@ function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: Imag
 
   return (
     <div>
-      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview' src={statefullUrl} alt={description} />
-      <input className="image-title" type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefullUrl(e.target.value) }} ref={urlRef} />
+      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview' src={statefulUrl} alt={description} />
+      <input className="image-title" type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
       <input className="image-description" type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
     </div>
   )
