@@ -1,6 +1,6 @@
 import { unSeed } from '../../prisma/unSeed'
 import * as sectionMock from '../../mocks/section'
-import { createArticle, getAllArticles, getArticle, publishArticle } from './article.server'
+import { createArticle, getAllArticles, getArticle, publishArticle, searchArticles } from './article.server'
 import { Article, PrismaClient, Section } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -43,6 +43,13 @@ describe("Article model", () => {
 
     const allArticles = await getAllArticles()
     expect(allArticles[0].sections[0].uuid).toBe(introSection!.uuid)
+  })
+
+  test("can search articles", async () => {
+    const search = sectionMock.title.substring(0, 3).toLocaleLowerCase()
+
+    const foundArticles = await searchArticles({ search })
+    expect(foundArticles[0].uuid).toBe(article?.uuid)
   })
 })
 
