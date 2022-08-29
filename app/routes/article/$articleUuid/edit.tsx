@@ -197,7 +197,9 @@ function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: Imag
   return (
     <div className='w-[200px] border border-darkGrey rounded rounded-m p-s mr-m mb-m' >
       <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview mb-s' src={statefulUrl} alt={description} />
+      <p className='font-xxs'>url</p>
       <input className='w-full px-xs border mb-s border-darkGrey image-title' type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
+      <p className='font-xxs'>description</p>
       <input className='w-full px-xs border border-darkGrey image-description' type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
     </div>
   )
