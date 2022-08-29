@@ -10,6 +10,7 @@ import Section from '~/components/Section';
 import { getArticle } from "~/models/article.server";
 import { createSection, createSubSection, updateSection } from '~/models/section.server';
 import { Image } from '@prisma/client';
+import PlusIcon from '~/components/icons/PlusIcon'
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -140,9 +141,11 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   }
 
   return (
-    <div className='w-[200px] border border-darkGrey rounded rounded-m' >
-      <input className='information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
-      <input className='information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
+    <div className='w-[200px] border border-darkGrey rounded rounded-m p-s mr-m mb-m' >
+      <p className='font-xxs'>title</p>
+      <input className='w-full px-xs border mb-s border-darkGrey information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
+      <p className='font-xxs'>description</p>
+      <input className='w-full px-xs border border-darkGrey information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
     </div>
   )
 }
@@ -345,14 +348,17 @@ function ArticleEditPage() {
             withContent
           />
         </div>
-        <div className='flex mt-m p-s'>
+        <div className='flex flex-wrap mt-m items-center'>
           {/* @ts-ignore */}
           {informations.map(({ title, description, uuid, fakeUuid }) => (
             <Information key={fakeUuid || uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
           ))}
-          <button onClick={addInformation}>Add Information</button>
+          <button className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey' onClick={addInformation}>
+            <PlusIcon className='w-l h-l mr-s' />
+            Add Information
+          </button>
         </div>
-        <div className='flex mt-m p-s'>
+        <div className='flex p-s'>
           {/* @ts-ignore */}
           {intro.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
             <ImageEditor
