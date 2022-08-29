@@ -194,10 +194,10 @@ function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: Imag
   }, [fetcher.data?.uuid])
 
   return (
-    <div>
-      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview' src={statefulUrl} alt={description} />
-      <input className="image-title" type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
-      <input className="image-description" type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
+    <div className='w-[200px] border border-darkGrey rounded rounded-m p-s mr-m mb-m' >
+      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview mb-s' src={statefulUrl} alt={description} />
+      <input className='w-full px-xs border mb-s border-darkGrey image-title' type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
+      <input className='w-full px-xs border border-darkGrey image-description' type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
     </div>
   )
 }
@@ -358,7 +358,7 @@ function ArticleEditPage() {
             Add Information
           </button>
         </div>
-        <div className='flex p-s'>
+        <div className='flex flex-wrap mt-m items-center'>
           {/* @ts-ignore */}
           {intro.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
             <ImageEditor
@@ -374,7 +374,10 @@ function ArticleEditPage() {
               }
             />
           ))}
-          <button onClick={() => { addIntroImage({ sectionUuid: intro.uuid }) }}>Add image</button>
+          <button className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey' onClick={() => { addIntroImage({ sectionUuid: intro.uuid }) }}>
+            <PlusIcon className='w-l h-l mr-s' />
+            Add Image
+          </button>
         </div>
       </div>
       <div>
@@ -411,7 +414,7 @@ function ArticleEditPage() {
                       }
                     />
                   </div>
-                  <div className='flex mt-m p-s'>
+                  <div className='flex flex-wrap mb-m items-center'>
                     {/* @ts-ignore */}
                     {subSection.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
                       <ImageEditor
@@ -427,7 +430,13 @@ function ArticleEditPage() {
                         }
                       />
                     ))}
-                    <button onClick={() => { addSubSectionImage({ sectionUuid: subSection.uuid, sectionIndex, subsectionIndex }) }}>Add image</button>
+                    <button
+                      className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey'
+                      onClick={() => { addSubSectionImage({ sectionUuid: subSection.uuid, sectionIndex, subsectionIndex }) }}
+                    >
+                      <PlusIcon className='w-l h-l mr-s' />
+                      Add Image
+                    </button>
                   </div>
                 </div>
               ))}
