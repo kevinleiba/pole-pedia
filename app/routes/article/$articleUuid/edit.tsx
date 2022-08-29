@@ -10,6 +10,8 @@ import Section from '~/components/Section';
 import { getArticle } from "~/models/article.server";
 import { createSection, createSubSection, updateSection } from '~/models/section.server';
 import { Image } from '@prisma/client';
+import PlusIcon from '~/components/icons/PlusIcon'
+import EyeIcon from '~/components/icons/EyeIcon'
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -140,9 +142,11 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   }
 
   return (
-    <div className='w-[200px] border border-darkGrey rounded rounded-m' >
-      <input className='information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
-      <input className='information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
+    <div className='w-[200px] border border-darkGrey rounded rounded-m p-s mr-m mb-m' >
+      <p className='font-xxs'>title</p>
+      <input className='w-full px-xs border mb-s border-darkGrey information-title' defaultValue={title} type="text" ref={titleRef} onBlur={() => { updateInfo() }} />
+      <p className='font-xxs'>description</p>
+      <input className='w-full px-xs border border-darkGrey information-description' defaultValue={description} type="text" ref={descriptionRef} onBlur={() => { updateInfo() }} />
     </div>
   )
 }
@@ -191,10 +195,12 @@ function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: Imag
   }, [fetcher.data?.uuid])
 
   return (
-    <div>
-      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview' src={statefulUrl} alt={description} />
-      <input className="image-title" type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
-      <input className="image-description" type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
+    <div className='w-[200px] border border-darkGrey rounded rounded-m p-s mr-m mb-m' >
+      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview mb-s' src={statefulUrl} alt={description} />
+      <p className='font-xxs'>url</p>
+      <input className='w-full px-xs border mb-s border-darkGrey image-title' type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
+      <p className='font-xxs'>description</p>
+      <input className='w-full px-xs border border-darkGrey image-description' type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
     </div>
   )
 }
@@ -345,14 +351,17 @@ function ArticleEditPage() {
             withContent
           />
         </div>
-        <div className='flex mt-m p-s'>
+        <div className='flex flex-wrap mt-m items-center'>
           {/* @ts-ignore */}
           {informations.map(({ title, description, uuid, fakeUuid }) => (
             <Information key={fakeUuid || uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
           ))}
-          <button onClick={addInformation}>Add Information</button>
+          <button className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey' onClick={addInformation}>
+            <PlusIcon className='w-l h-l mr-s' />
+            Add Information
+          </button>
         </div>
-        <div className='flex mt-m p-s'>
+        <div className='flex flex-wrap mt-m items-center'>
           {/* @ts-ignore */}
           {intro.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
             <ImageEditor
@@ -368,7 +377,10 @@ function ArticleEditPage() {
               }
             />
           ))}
-          <button onClick={() => { addIntroImage({ sectionUuid: intro.uuid }) }}>Add image</button>
+          <button className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey' onClick={() => { addIntroImage({ sectionUuid: intro.uuid }) }}>
+            <PlusIcon className='w-l h-l mr-s' />
+            Add Image
+          </button>
         </div>
       </div>
       <div>
@@ -405,7 +417,7 @@ function ArticleEditPage() {
                       }
                     />
                   </div>
-                  <div className='flex mt-m p-s'>
+                  <div className='flex flex-wrap mb-m items-center'>
                     {/* @ts-ignore */}
                     {subSection.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
                       <ImageEditor
@@ -421,17 +433,41 @@ function ArticleEditPage() {
                         }
                       />
                     ))}
-                    <button onClick={() => { addSubSectionImage({ sectionUuid: subSection.uuid, sectionIndex, subsectionIndex }) }}>Add image</button>
+                    <button
+                      className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey'
+                      onClick={() => { addSubSectionImage({ sectionUuid: subSection.uuid, sectionIndex, subsectionIndex }) }}
+                    >
+                      <PlusIcon className='w-l h-l mr-s' />
+                      Add Image
+                    </button>
                   </div>
                 </div>
               ))}
-              <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>
+              <button
+                className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey w-full justify-center'
+                onClick={() => { addSubSection({ sectionIndex }) }}>
+                <PlusIcon className='w-l h-l mr-s' />
+                Add Sub Section
+              </button>
             </div>
           </div>
         ))}
-        <button onClick={() => { addSection() }}>Add Section</button>
+        <button
+          className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey w-full justify-center'
+          onClick={() => { addSection() }}
+        >
+          <PlusIcon className='w-l h-l mr-s' />
+          Add Section
+        </button>
       </div>
-      <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
+      <Link to={`/article/${data.article?.uuid || ''}`}>
+        <button
+          className='rounded rounded-m border border-darkGrey flex items-center px-m py-s hover:bg-lightGrey justify-center fixed bottom-s right-s bg-white'
+        >
+          <EyeIcon className='w-l h-l mr-s' />
+          View Article
+        </button>
+      </Link>
     </div>
   )
 }

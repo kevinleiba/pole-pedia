@@ -64,7 +64,7 @@ export default function ArticleDetailPage() {
           <div className="py-s">
             {img ? (
               <div className="flex flex-col items-center px-l mb-s">
-                <img className="object-contain max-w-[292px] max-h-[292px] m-auto intro-image" src={img.url} alt={img.description} />
+                <img className="object-contain max-w-[292px] max-h-[292px] w-full h-full m-auto intro-image" src={img.url} alt={img.description} />
                 <p className="mt-s text-center">{img.description}</p>
               </div>
             )
