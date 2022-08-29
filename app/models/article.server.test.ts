@@ -41,7 +41,7 @@ describe("Article model", () => {
 
   test("can get all articles", async () => {
 
-    const allArticles = await getAllArticles()
+    const allArticles = await getAllArticles({})
     expect(allArticles[0].sections[0].uuid).toBe(introSection!.uuid)
   })
 
