@@ -25,11 +25,12 @@ export function getArticle({ articleUuid }: { articleUuid: Article['uuid'] }) {
 }
 
 export function getAllArticles() {
-  return prisma.article.findMany({ include: { sections: { orderBy: { order: 'asc' } } } })
+  return prisma.article.findMany({ orderBy: { createdAt: 'desc' }, include: { sections: { orderBy: { order: 'asc' } } } })
 }
 
 export async function searchArticles({ search }: { search: string }) {
   return prisma.article.findMany({
+    orderBy: { createdAt: 'desc' },
     where: {
       sections: {
         some: {

@@ -710,14 +710,6 @@ code {
   margin-top: 64px;
 }
 
-.mb-m {
-  margin-bottom: 16px;
-}
-
-.mb-s {
-  margin-bottom: 8px;
-}
-
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -726,8 +718,16 @@ code {
   margin-left: 0.5rem;
 }
 
+.mb-m {
+  margin-bottom: 16px;
+}
+
 .mr-m {
   margin-right: 16px;
+}
+
+.mb-s {
+  margin-bottom: 8px;
 }
 
 .mb-l {
@@ -778,8 +778,8 @@ code {
   height: 100px;
 }
 
-.h-\[300px\] {
-  height: 300px;
+.h-\[200px\] {
+  height: 200px;
 }
 
 .h-4 {
@@ -792,6 +792,10 @@ code {
 
 .h-\[1px\] {
   height: 1px;
+}
+
+.h-\[300px\] {
+  height: 300px;
 }
 
 .max-h-\[128px\] {
@@ -826,8 +830,8 @@ code {
   width: 1px;
 }
 
-.w-\[300px\] {
-  width: 300px;
+.w-\[200px\] {
+  width: 200px;
 }
 
 .w-full {
@@ -842,20 +846,16 @@ code {
   width: 20rem;
 }
 
-.w-\[200px\] {
-  width: 200px;
-}
-
 .w-l {
   width: 32px;
 }
 
-.max-w-\[717px\] {
-  max-width: 717px;
+.w-\[300px\] {
+  width: 300px;
 }
 
-.max-w-\[1200px\] {
-  max-width: 1200px;
+.max-w-\[717px\] {
+  max-width: 717px;
 }
 
 .max-w-md {
@@ -872,6 +872,10 @@ code {
 
 .max-w-\[292px\] {
   max-width: 292px;
+}
+
+.max-w-\[1200px\] {
+  max-width: 1200px;
 }
 
 .flex-1 {
@@ -955,11 +959,6 @@ code {
   border-color: rgb(162 169 177 / var(--tw-border-opacity));
 }
 
-.border-black {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
-}
-
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -973,6 +972,11 @@ code {
 .border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .bg-blue-500 {
@@ -1073,10 +1077,6 @@ code {
   padding: 64px;
 }
 
-.p-m {
-  padding: 16px;
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -1085,13 +1085,12 @@ code {
   padding: 1.5rem;
 }
 
-.p-xs {
-  padding: 4px;
+.p-m {
+  padding: 16px;
 }
 
-.px-xs {
-  padding-left: 4px;
-  padding-right: 4px;
+.p-xs {
+  padding: 4px;
 }
 
 .px-8 {
@@ -1127,6 +1126,11 @@ code {
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+}
+
+.px-xs {
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .px-m {
@@ -1169,10 +1173,6 @@ code {
   font-size: 12.1px;
 }
 
-.text-xl {
-  font-size: 21px;
-}
-
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -1186,6 +1186,10 @@ code {
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
+}
+
+.text-xl {
+  font-size: 21px;
 }
 
 .text-2xl {
