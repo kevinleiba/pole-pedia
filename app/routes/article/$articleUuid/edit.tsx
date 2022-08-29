@@ -440,11 +440,22 @@ function ArticleEditPage() {
                   </div>
                 </div>
               ))}
-              <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>
+              <button
+                className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey w-full justify-center'
+                onClick={() => { addSubSection({ sectionIndex }) }}>
+                <PlusIcon className='w-l h-l mr-s' />
+                Add Sub Section
+              </button>
             </div>
           </div>
         ))}
-        <button onClick={() => { addSection() }}>Add Section</button>
+        <button
+          className='rounded rounded-m border border-darkGrey flex items-center px-m py-s mb-m hover:bg-lightGrey w-full justify-center'
+          onClick={() => { addSection() }}
+        >
+          <PlusIcon className='w-l h-l mr-s' />
+          Add Section
+        </button>
       </div>
       <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
     </div>
