@@ -629,6 +629,10 @@ code {
   position: absolute;
 }
 
+.relative {
+  position: relative;
+}
+
 .sticky {
   position: -webkit-sticky;
   position: sticky;
@@ -686,10 +690,6 @@ code {
   margin-right: 8px;
 }
 
-.mt-xl {
-  margin-top: 64px;
-}
-
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -734,6 +734,10 @@ code {
   margin-top: 32px;
 }
 
+.mt-xl {
+  margin-top: 64px;
+}
+
 .mb-xs {
   margin-bottom: 4px;
 }
@@ -776,6 +780,10 @@ code {
 
 .h-l {
   height: 32px;
+}
+
+.h-\[1px\] {
+  height: 1px;
 }
 
 .max-h-\[128px\] {
@@ -864,6 +872,10 @@ code {
 
 .items-center {
   align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-center {
@@ -978,8 +990,22 @@ code {
   background-color: rgb(153 194 255 / var(--tw-bg-opacity));
 }
 
+.bg-darkGrey {
+  --tw-bg-opacity: 1;
+  background-color: rgb(162 169 177 / var(--tw-bg-opacity));
+}
+
+.bg-darkBlue {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 69 173 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
 
 .from-white {
@@ -988,14 +1014,30 @@ code {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-lightGrey {
+  --tw-gradient-from: #F8F9FA ;
+  --tw-gradient-to: rgb(248 249 250 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .via-lightGrey {
   --tw-gradient-to: rgb(248 249 250 / 0);
   --tw-gradient-stops: var(--tw-gradient-from), #F8F9FA , var(--tw-gradient-to);
 }
 
+.via-skyBlue {
+  --tw-gradient-to: rgb(153 194 255 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), #99C2FF, var(--tw-gradient-to);
+}
+
 .via-vividBlue {
   --tw-gradient-to: rgb(176 214 247 / 0);
   --tw-gradient-stops: var(--tw-gradient-from), #B0D6F7, var(--tw-gradient-to);
+}
+
+.via-white {
+  --tw-gradient-to: rgb(255 255 255 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), #fff, var(--tw-gradient-to);
 }
 
 .to-white {
@@ -1004,6 +1046,10 @@ code {
 
 .to-vividBlue {
   --tw-gradient-to: #B0D6F7;
+}
+
+.to-lightGrey {
+  --tw-gradient-to: #F8F9FA ;
 }
 
 .object-contain {
@@ -1099,6 +1145,10 @@ code {
   padding-top: 0.25rem;
 }
 
+.pr-m {
+  padding-right: 16px;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1137,6 +1187,10 @@ code {
 
 .text-xs {
   font-size: 12.1px;
+}
+
+.text-xxs {
+  font-size: 11px;
 }
 
 .font-medium {
