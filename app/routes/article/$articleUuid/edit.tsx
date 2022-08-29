@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Section from '~/components/Section';
 import { getArticle } from "~/models/article.server";
 import { createSection, createSubSection, updateSection } from '~/models/section.server';
+import { Image } from '@prisma/client';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -59,9 +60,9 @@ interface FullSectionArgs {
 function FullSection(
   { setSectionUuid, uuid, content, title, articleUuid, order, withContent, sectionUuid }: FullSectionArgs
 ) {
-  const [statefullTitle, setStatefullTitle] = useState(title)
-  const [statefullContent, setStatefullContent] = useState(content)
-  const [statefullUuid, setStatefullUuid] = useState(uuid)
+  const [statefulTitle, setStatefulTitle] = useState(title)
+  const [statefulContent, setStatefulContent] = useState(content)
+  const [statefulUuid, setStatefulUuid] = useState(uuid)
 
   const fetcher = useFetcher();
   const initialRender = useRef(true)
@@ -71,22 +72,22 @@ function FullSection(
     else {
       fetcher.submit(
         {
-          uuid: statefullUuid,
-          content: statefullContent,
-          title: statefullTitle,
+          uuid: statefulUuid,
+          content: statefulContent,
+          title: statefulTitle,
           articleUuid,
           order: String(order),
           sectionUuid: sectionUuid || ''
         },
         { method: "post" })
     }
-  }, [statefullTitle, statefullContent])
+  }, [statefulTitle, statefulContent])
 
   useEffect(() => {
     if (fetcher.data?.uuid) {
-      setStatefullUuid(fetcher.data?.uuid)
+      setStatefulUuid(fetcher.data?.uuid)
       setSectionUuid?.(
-        { uuid: fetcher.data.uuid, content: statefullContent, title: statefullTitle },
+        { uuid: fetcher.data.uuid, content: statefulContent, title: statefulTitle },
       )
     }
   }, [fetcher.data?.uuid])
@@ -94,9 +95,9 @@ function FullSection(
   return (
     <div>
       <input className='text-xxl mb-m block w-full border border-darkGrey px-xs rounded rounded-m section-title' type="text" defaultValue={title} onBlur={(e) => {
-        setStatefullTitle(e.target.value)
+        setStatefulTitle(e.target.value)
       }} />
-      {withContent && <Section onBlur={setStatefullContent}
+      {withContent && <Section onBlur={setStatefulContent}
         content={content || ''} />}
       <fetcher.Form method='post' action={`/article/${articleUuid}/edit`} />
     </div>
@@ -114,13 +115,13 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   const titleRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
 
-  const [statefullUuid, setStatefullUuid] = useState(uuid || '')
+  const [statefulUuid, setStatefulUuid] = useState(uuid || '')
 
   const fetcher = useFetcher()
 
   useEffect(() => {
     if (fetcher.data?.uuid) {
-      setStatefullUuid(fetcher.data?.uuid)
+      setStatefulUuid(fetcher.data?.uuid)
     }
   }, [fetcher.data?.uuid])
 
@@ -130,7 +131,7 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
         {
           title: titleRef.current.value,
           description: descriptionRef.current.value,
-          uuid: statefullUuid,
+          uuid: statefulUuid,
           articleUuid,
         },
         { method: "post", action: '/information' }
@@ -146,8 +147,57 @@ function Information({ articleUuid, title, description, uuid }: InformationProps
   )
 }
 
-const EMPTY_SECTION = { content: '', uuid: '', title: '', images: [], createdAt: new Date(), updatedAt: new Date() }
+const EMPTY_SECTION = { content: '', uuid: '', title: '', images: [] as Image[], createdAt: new Date(), updatedAt: new Date() }
 
+interface ImageEditorProps {
+  url: string
+  uuid: string
+  description: string
+  sectionUuid: string
+  setImageUuid: ({ uuid, description, url }: { uuid: string, description: string, url: string }) => void
+}
+function ImageEditor({ url, uuid, description, sectionUuid, setImageUuid }: ImageEditorProps) {
+  const fetcher = useFetcher()
+  const updatedUuid = useRef(uuid)
+  const urlRef = useRef<HTMLInputElement>(null)
+  const descriptionRef = useRef<HTMLInputElement>(null)
+  const [statefulUrl, setStatefulUrl] = useState(url)
+
+  function updateImage() {
+    const newUrl = urlRef.current?.value
+    const newDescription = descriptionRef.current?.value
+
+    if (newUrl && newDescription) {
+      fetcher.submit(
+        {
+          url: newUrl,
+          uuid: updatedUuid.current || uuid,
+          description: newDescription,
+          sectionUuid
+        },
+        {
+          method: "post",
+          action: "/image"
+        }
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (fetcher.data?.uuid) {
+      updatedUuid.current = fetcher.data.uuid
+      setImageUuid({ uuid: updatedUuid.current, description: descriptionRef.current!.value, url: urlRef.current!.value })
+    }
+  }, [fetcher.data?.uuid])
+
+  return (
+    <div>
+      <img className='object-contain m-auto max-w-[128px] max-h-[128px] image-preview' src={statefulUrl} alt={description} />
+      <input className="image-title" type="text" defaultValue={url} onBlur={updateImage} onChange={e => { setStatefulUrl(e.target.value) }} ref={urlRef} />
+      <input className="image-description" type="text" defaultValue={description} onBlur={updateImage} ref={descriptionRef} />
+    </div>
+  )
+}
 
 function ArticleEditPage() {
   const data = useLoaderData() as LoaderData;
@@ -185,6 +235,42 @@ function ArticleEditPage() {
     })
   }
 
+  function addIntroImage({ sectionUuid }: { sectionUuid: string }) {
+    setIntro((oldIntro) => {
+      return produce(oldIntro, draft => {
+        draft.images.push({
+          uuid: '',
+          url: '',
+          // @ts-ignore
+          fakeUuid: uuidv4(),
+          description: '',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          sectionUuid,
+          articleUuid: null
+        })
+      })
+    })
+  }
+
+  function addSubSectionImage({ sectionUuid, sectionIndex, subsectionIndex }: { sectionUuid: string, sectionIndex: number, subsectionIndex: number }) {
+    setSections((oldSections) => {
+      return produce(oldSections, draft => {
+        draft[sectionIndex].subSections[subsectionIndex].images.push({
+          uuid: '',
+          url: '',
+          // @ts-ignore
+          fakeUuid: uuidv4(),
+          description: '',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          sectionUuid,
+          articleUuid: null
+        })
+      })
+    })
+  }
+
   function setIntroUuid({ uuid, content, title }: { uuid: string, content: string, title: string }) {
     setIntro(oldSections => {
       return produce(oldSections, draft => {
@@ -195,12 +281,44 @@ function ArticleEditPage() {
     })
   }
 
+  function setIntroImageUuid({ uuid, description, url, imageIndex }: { uuid: string, description: string, url: string, imageIndex: number }) {
+    setIntro(oldSections => {
+      return produce(oldSections, draft => {
+        draft.images[imageIndex].uuid = uuid
+        draft.images[imageIndex].description = description
+        draft.images[imageIndex].url = url
+      })
+    })
+  }
+
+  function setSubsectionImageUuid({ uuid, description, url, imageIndex, sectionIndex, subsectionIndex }: { uuid: string, description: string, url: string, imageIndex: number, sectionIndex: number, subsectionIndex: number }) {
+    setSections(oldSections => {
+      return produce(oldSections, draft => {
+        const image = draft[sectionIndex].subSections[subsectionIndex].images[imageIndex]
+        image.uuid = uuid
+        image.description = description
+        image.url = url
+      })
+    })
+  }
+
   function setSectionUuid({ uuid, content, title, sectionIndex }: { uuid: string, content: string, title: string, sectionIndex: number }) {
     setSections(oldSections => {
       return produce(oldSections, draft => {
         draft[sectionIndex].uuid = uuid
         draft[sectionIndex].content = content
         draft[sectionIndex].title = title
+      })
+    })
+  }
+
+  function setSubSectionUuid({ uuid, content, title, sectionIndex, subSectionIndex }: { uuid: string, content: string, title: string, sectionIndex: number, subSectionIndex: number }) {
+    setSections(oldSections => {
+      return produce(oldSections, draft => {
+        const subSection = draft[sectionIndex].subSections[subSectionIndex]
+        subSection.uuid = uuid
+        subSection.content = content
+        subSection.title = title
       })
     })
   }
@@ -230,9 +348,27 @@ function ArticleEditPage() {
         <div className='flex mt-m p-s'>
           {/* @ts-ignore */}
           {informations.map(({ title, description, uuid, fakeUuid }) => (
-            <Information key={uuid || fakeUuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
+            <Information key={fakeUuid || uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
           ))}
           <button onClick={addInformation}>Add Information</button>
+        </div>
+        <div className='flex mt-m p-s'>
+          {/* @ts-ignore */}
+          {intro.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
+            <ImageEditor
+              key={fakeUuid || uuid}
+              url={url}
+              description={description}
+              uuid={uuid}
+              sectionUuid={intro.uuid}
+              setImageUuid={
+                ({ uuid, description, url }) => {
+                  setIntroImageUuid({ uuid, description, url, imageIndex })
+                }
+              }
+            />
+          ))}
+          <button onClick={() => { addIntroImage({ sectionUuid: intro.uuid }) }}>Add image</button>
         </div>
       </div>
       <div>
@@ -252,18 +388,41 @@ function ArticleEditPage() {
               />
             </div>
             <div className="ml-m">
-              {section.subSections.map((subSection) => (
+              {section.subSections.map((subSection, subsectionIndex) => (
                 // @ts-ignore
-                <div className='mb-l' key={subSection.uuid || subSection.fakeUuid}>
-                  <FullSection
-                    uuid={subSection.uuid || ''}
-                    content={subSection.content || ''}
-                    title={subSection.title || ''}
-                    articleUuid=""
-                    order={subSection.order}
-                    withContent
-                    sectionUuid={section.uuid}
-                  />
+                <div key={subSection.fakeUuid || subSection.uuid}>
+                  <div className='mb-l' >
+                    <FullSection
+                      uuid={subSection.uuid || ''}
+                      content={subSection.content || ''}
+                      title={subSection.title || ''}
+                      articleUuid=""
+                      order={subSection.order}
+                      withContent
+                      sectionUuid={section.uuid}
+                      setSectionUuid={
+                        ({ uuid, content, title }: { uuid: string, content: string, title: string }) => { setSubSectionUuid({ uuid, content, title, sectionIndex, subSectionIndex: subsectionIndex }) }
+                      }
+                    />
+                  </div>
+                  <div className='flex mt-m p-s'>
+                    {/* @ts-ignore */}
+                    {subSection.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
+                      <ImageEditor
+                        key={fakeUuid || uuid}
+                        url={url}
+                        description={description}
+                        uuid={uuid}
+                        sectionUuid={subSection.uuid}
+                        setImageUuid={
+                          ({ uuid, description, url }) => {
+                            setSubsectionImageUuid({ uuid, description, url, imageIndex, sectionIndex, subsectionIndex })
+                          }
+                        }
+                      />
+                    ))}
+                    <button onClick={() => { addSubSectionImage({ sectionUuid: subSection.uuid, sectionIndex, subsectionIndex }) }}>Add image</button>
+                  </div>
                 </div>
               ))}
               <button onClick={() => { addSubSection({ sectionIndex }) }}>Add Sub Section</button>

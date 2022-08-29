@@ -721,6 +721,10 @@ code {
   height: 1rem;
 }
 
+.max-h-\[128px\] {
+  max-height: 128px;
+}
+
 .max-h-\[292px\] {
   max-height: 292px;
 }
@@ -755,6 +759,10 @@ code {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.max-w-\[128px\] {
+  max-width: 128px;
 }
 
 .max-w-\[320px\] {

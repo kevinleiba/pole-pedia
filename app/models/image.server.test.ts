@@ -1,9 +1,10 @@
 import { unSeed } from '../../prisma/unSeed'
-import { createImage } from './image.server'
+import { createImage, updateImage } from './image.server'
 import { url, description } from '../../mocks/image'
 import { Image, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+let image: Image
 
 describe("Image model", () => {
   beforeAll(async () => {
@@ -21,5 +22,16 @@ describe("Image model", () => {
     expect(images).toHaveLength(1)
     expect(images[0].description).toBe(description)
     expect(images[0].url).toBe(url)
+    image = images[0]
+  })
+
+  test("can update an image", async () => {
+    const newDescription = 'updated description'
+    const newUrl = 'https://picsum.photos/id/42/20/10'
+
+    await updateImage({ uuid: image.uuid, url: newUrl, description: newDescription })
+    const updatedImage = await prisma.image.findFirst({ where: { uuid: image.uuid } })
+    expect(updatedImage?.url).toBe(newUrl)
+    expect(updatedImage?.description).toBe(newDescription)
   })
 })
