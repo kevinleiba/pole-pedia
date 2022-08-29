@@ -219,3 +219,42 @@ describe("Add informations", () => {
     cy.findByText(firstInfoContent)
   })
 })
+
+describe("Add Images", () => {
+  before(() => {
+    cy.clearDb()
+    cy.seedDb()
+    cy.setArticleUuid()
+  })
+
+  it("Updates an image", () => {
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    const newUrl = "https://picsum.photos/id/42/50/25"
+    const newDescription = "new image description"
+
+    cy.findByDisplayValue(description).type("{selectAll}").type(newDescription).blur()
+    cy.findByDisplayValue(url).type("{selectAll}").type(newUrl).blur()
+
+    cy.get(".image-preview").should('have.attr', 'src').and('contain', newUrl)
+    cy.wait(500)
+
+    cy.visit(`/article/${dbObject.uuid}`)
+    cy.get('.intro-image').should('have.attr', 'src').and('contain', newUrl)
+  })
+
+  it("Adds an image", () => {
+    const newUrl = "https://picsum.photos/id/3/30/30"
+    const newDescription = "New image is added to subSection"
+
+    cy.visit(`/article/${dbObject.uuid}/edit`)
+
+    cy.findAllByText('Add Image', { exact: false }).eq(1).click()
+    cy.get(".image-title").eq(1).type(newUrl)
+    cy.get(".image-description").eq(1).type(newDescription).blur()
+    cy.wait(500)
+
+    cy.visit(`/article/${dbObject.uuid}`)
+    cy.get('.subsection-image').eq(0).should('have.attr', 'src').and('contain', newUrl)
+  })
+})

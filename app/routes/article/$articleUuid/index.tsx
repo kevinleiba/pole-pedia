@@ -64,7 +64,7 @@ export default function ArticleDetailPage() {
           <div className="py-s">
             {img ? (
               <div className="flex flex-col items-center px-l mb-s">
-                <img className="object-contain max-w-[292px] max-h-[292px] m-auto" src={img.url} alt={img.description} />
+                <img className="object-contain max-w-[292px] max-h-[292px] m-auto intro-image" src={img.url} alt={img.description} />
                 <p className="mt-s text-center">{img.description}</p>
               </div>
             )
@@ -100,7 +100,7 @@ export default function ArticleDetailPage() {
                       <div className="flex flex-col items-center">
                         {subSection.images.map(image => (
                           <div key={image.uuid} className="bg-lightGrey border border-darkGrey p-xs mb-m">
-                            <img className="border border-darkGrey object-contain max-w-[292px] max-h-[292px] m-auto" src={image.url} alt={image.description} />
+                            <img className="border border-darkGrey object-contain max-w-[292px] max-h-[292px] m-auto subsection-image" src={image.url} alt={image.description} />
                             <p className="text-center">{image.description}</p>
                           </div>
                         ))}
