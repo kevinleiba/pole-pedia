@@ -721,12 +721,12 @@ code {
   height: 1rem;
 }
 
-.max-h-\[292px\] {
-  max-height: 292px;
-}
-
 .max-h-\[128px\] {
   max-height: 128px;
+}
+
+.max-h-\[292px\] {
+  max-height: 292px;
 }
 
 .min-h-\[300px\] {
@@ -761,16 +761,16 @@ code {
   max-width: 28rem;
 }
 
+.max-w-\[128px\] {
+  max-width: 128px;
+}
+
 .max-w-\[320px\] {
   max-width: 320px;
 }
 
 .max-w-\[292px\] {
   max-width: 292px;
-}
-
-.max-w-\[128px\] {
-  max-width: 128px;
 }
 
 .flex-1 {

@@ -312,6 +312,17 @@ function ArticleEditPage() {
     })
   }
 
+  function setSubSectionUuid({ uuid, content, title, sectionIndex, subSectionIndex }: { uuid: string, content: string, title: string, sectionIndex: number, subSectionIndex: number }) {
+    setSections(oldSections => {
+      return produce(oldSections, draft => {
+        const subSection = draft[sectionIndex].subSections[subSectionIndex]
+        subSection.uuid = uuid
+        subSection.content = content
+        subSection.title = title
+      })
+    })
+  }
+
   function addInformation() {
     setInformations(infos => ([...infos, { uuid: '', fakeUuid: uuidv4(), description: '', title: '', articleUuid: data.article?.uuid || '', createdAt: new Date(), updatedAt: new Date() }]))
   }
@@ -337,7 +348,7 @@ function ArticleEditPage() {
         <div className='flex mt-m p-s'>
           {/* @ts-ignore */}
           {informations.map(({ title, description, uuid, fakeUuid }) => (
-            <Information key={uuid || fakeUuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
+            <Information key={fakeUuid || uuid} uuid={uuid} articleUuid={data.article?.uuid || ''} title={title} description={description} />
           ))}
           <button onClick={addInformation}>Add Information</button>
         </div>
@@ -345,7 +356,7 @@ function ArticleEditPage() {
           {/* @ts-ignore */}
           {intro.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
             <ImageEditor
-              key={uuid || fakeUuid}
+              key={fakeUuid || uuid}
               url={url}
               description={description}
               uuid={uuid}
@@ -379,7 +390,7 @@ function ArticleEditPage() {
             <div className="ml-m">
               {section.subSections.map((subSection, subsectionIndex) => (
                 // @ts-ignore
-                <div key={subSection.uuid || subSection.fakeUuid}>
+                <div key={subSection.fakeUuid || subSection.uuid}>
                   <div className='mb-l' >
                     <FullSection
                       uuid={subSection.uuid || ''}
@@ -389,13 +400,16 @@ function ArticleEditPage() {
                       order={subSection.order}
                       withContent
                       sectionUuid={section.uuid}
+                      setSectionUuid={
+                        ({ uuid, content, title }: { uuid: string, content: string, title: string }) => { setSubSectionUuid({ uuid, content, title, sectionIndex, subSectionIndex: subsectionIndex }) }
+                      }
                     />
                   </div>
                   <div className='flex mt-m p-s'>
                     {/* @ts-ignore */}
                     {subSection.images.map(({ uuid, url, description, fakeUuid }, imageIndex) => (
                       <ImageEditor
-                        key={uuid || fakeUuid}
+                        key={fakeUuid || uuid}
                         url={url}
                         description={description}
                         uuid={uuid}
