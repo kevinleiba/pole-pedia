@@ -22,7 +22,7 @@ describe("Article detail page", () => {
     cy.get("#intro-content").invoke('html').should('eq', content)
 
     // image
-    cy.findByRole("img").should('have.attr', 'src').and('contain', url)
+    cy.get(".intro-image").should('have.attr', 'src').and('contain', url)
     cy.findByText(description)
     // informations
     cy.findByText(infoDescription)

@@ -51,7 +51,6 @@ export default function ArticleDetailPage() {
                   <div>
                     {section.subSections.map((subSection) => (
                       <a key={subSection.uuid} href={`#${subSection.uuid}`}>
-
                         <div className="flex mb-s hover:underline">
                           <p className="mx-s">{section.order}.{subSection.order + 1}</p>
                           <p className="text-darkBlue">{subSection.title}</p>
