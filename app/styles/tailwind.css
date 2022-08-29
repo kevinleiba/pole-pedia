@@ -625,12 +625,12 @@ code {
   position: fixed;
 }
 
-.bottom-m {
-  bottom: 16px;
+.bottom-s {
+  bottom: 8px;
 }
 
-.right-m {
-  right: 16px;
+.right-s {
+  right: 8px;
 }
 
 .m-auto {
@@ -974,14 +974,9 @@ code {
   padding-right: 4px;
 }
 
-.py-m {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.px-s {
-  padding-left: 8px;
-  padding-right: 8px;
+.px-m {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .py-s {
@@ -989,14 +984,14 @@ code {
   padding-bottom: 8px;
 }
 
+.px-s {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .px-l {
   padding-left: 32px;
   padding-right: 32px;
-}
-
-.px-m {
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 .pt-1 {

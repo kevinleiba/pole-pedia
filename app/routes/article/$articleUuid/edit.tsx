@@ -11,6 +11,7 @@ import { getArticle } from "~/models/article.server";
 import { createSection, createSubSection, updateSection } from '~/models/section.server';
 import { Image } from '@prisma/client';
 import PlusIcon from '~/components/icons/PlusIcon'
+import EyeIcon from '~/components/icons/EyeIcon'
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -457,7 +458,14 @@ function ArticleEditPage() {
           Add Section
         </button>
       </div>
-      <Link to={`/article/${data.article?.uuid || ''}`}><p className='fixed bottom-m right-m'>View Article</p></Link>
+      <Link to={`/article/${data.article?.uuid || ''}`}>
+        <button
+          className='rounded rounded-m border border-darkGrey flex items-center px-m py-s hover:bg-lightGrey justify-center fixed bottom-s right-s bg-white'
+        >
+          <EyeIcon className='w-l h-l mr-s' />
+          View Article
+        </button>
+      </Link>
     </div>
   )
 }
