@@ -2,6 +2,7 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { getAllArticles, searchArticles } from "~/models/article.server";
 import logo from "~/components/icons/logo.svg";
+import EditIcon from "~/components/icons/edit";
 
 type LoaderData = {
   articles: Awaited<ReturnType<typeof getAllArticles | typeof searchArticles>>;
@@ -40,6 +41,16 @@ export default function Index() {
             </div>)
           )}
           {!withSearch && <Link to="/?searchAll=true"><h2 className="text-center underline">Show all articles</h2></Link>}
+        </div>
+        <div className="w-full max-w-[1200px] flex justify-end">
+          <Link to="/article/new">
+            <button
+              className='mt-xl rounded rounded-m border border-darkGrey flex items-center px-m py-s hover:bg-lightGrey justify-center bg-white'
+            >
+              <EditIcon className='w-l h-l mr-s' />
+              Create Article
+            </button>
+          </Link>
         </div>
       </div>
     </div>
