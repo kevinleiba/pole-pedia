@@ -26,6 +26,11 @@ export function getArticle({ articleUuid }: { articleUuid: Article['uuid'] }) {
 
 export function getAllArticles({ take }: { take?: number }) {
   return prisma.article.findMany({
+    where: {
+      sections: {
+        some: {}
+      }
+    },
     orderBy: { createdAt: 'desc' },
     include: { sections: { orderBy: { order: 'asc' } } },
     take
