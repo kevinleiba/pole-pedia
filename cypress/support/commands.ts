@@ -26,6 +26,30 @@ declare global {
        *    cy.cleanupUser({ email: 'whatever@example.com' })
        */
       cleanupUser: typeof cleanupUser;
+
+      /**
+       * Clear all entries in the db
+       *
+       * @returns {typeof clearDb}
+       * @memberof Chainable
+       */
+      clearDb: typeof clearDb;
+
+      /**
+       * Launches prisma seed
+       *
+       * @returns {typeof seedDb}
+       * @memberof Chainable
+       */
+      seedDb: typeof seedDb;
+
+      /**
+       * forces uuid of article for easier navigation
+       *
+       * @returns {typeof setArticleUuid}
+       * @memberof Chainable
+       */
+      setArticleUuid: typeof setArticleUuid;
     }
   }
 }
@@ -68,8 +92,29 @@ function deleteUserByEmail(email: string) {
   cy.clearCookie("__session");
 }
 
+function clearDb() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./prisma/autoUnseed`
+  );
+}
+
+function seedDb() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./prisma/autoSeed`
+  );
+}
+
+function setArticleUuid() {
+  cy.exec(
+    `npx ts-node --require tsconfig-paths/register ./cypress/support/set-article-uuid.ts`
+  );
+}
+
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("cleanupUser", cleanupUser);
+Cypress.Commands.add("clearDb", clearDb)
+Cypress.Commands.add("seedDb", seedDb)
+Cypress.Commands.add("setArticleUuid", setArticleUuid)
 
 /*
 eslint

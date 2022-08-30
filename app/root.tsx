@@ -15,14 +15,18 @@ import {
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
+import logo from "~/components/icons/logo.svg"
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "icon", href: logo }
+  ];
 };
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Pole Pedia",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -43,7 +47,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
+      <body>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
