@@ -37,7 +37,7 @@ export default function Index() {
           <h2 className="mb-m">Latest articles:</h2>
           {articles.map(article => (
             <div key={article.uuid} className="mb-s">
-              <Link to={`/article/${article.uuid}`}><h3 className="hover:underline">{article.sections[0].title}</h3></Link>
+              <Link to={`/article/${article.uuid}`}><h3 className="hover:underline">{article?.sections[0]?.title}</h3></Link>
             </div>)
           )}
           {!withSearch && <Link to="/?searchAll=true"><h2 className="text-center underline">Show all articles</h2></Link>}
