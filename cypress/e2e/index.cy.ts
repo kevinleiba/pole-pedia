@@ -18,12 +18,12 @@ describe("Index page", () => {
     cy.visit('/')
     cy.get('.article-search').type(`${truncatedTitle}`).type('{enter}')
     cy.url().should("match", new RegExp(`/?search=${truncatedTitle}`))
-    cy.findByText(title)
+    cy.findByRole("link", { name: title }).should('exist')
 
 
     const notFound = "noarticleshouldmatchthisstring"
     cy.get('.article-search').type('{selectAll}').type(notFound).type('{enter}')
     cy.url().should("match", new RegExp(`/?search=${notFound}`))
-    cy.findByText(title).should('be.undefined')
+    cy.findByRole("link", { name: title }).should('not.exist')
   })
 })
