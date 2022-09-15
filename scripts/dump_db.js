@@ -45,6 +45,7 @@ function dumpDbToS3() {
   })
 }
 
-pgDump().then(dumpDbToS3).catch((code) => {
-  console.log(`could not pg_dump. Process exited with code: ${code}`)
-})
+module.exports = {
+  pgDump,
+  dumpDbToS3
+}
