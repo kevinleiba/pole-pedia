@@ -10,10 +10,8 @@ const DUMP_NAME = 'dump.sql'
 function pgDump() {
   return new Promise((resolve, reject) => {
     const DB_URL = process.env.DATABASE_URL
-    const DB_NAME = DB_URL.split('/')[3]
 
-    const child = spawn('pg_dump', [DB_NAME, '-a', '-f', DUMP_NAME])
-
+    const child = spawn('pg_dump', [`--dbname=${DB_URL}`, '-a', '-f', DUMP_NAME])
     child.on('exit', function (code, signal) {
       if (code === 0 && signal === null) return resolve()
       reject(code)
